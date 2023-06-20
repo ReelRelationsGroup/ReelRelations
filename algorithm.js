@@ -37,6 +37,13 @@ function bfs(graph, actor1, actor2) {
   return null;
 }
 
+// Using the bfs function
+let path = bfs(graph, actor1, actor2);
+
+// Calculate degrees of separation
+let degreesOfSeparation = path ? path.length - 1 : null;
+console.log(`Degrees of separation: ${degreesOfSeparation}`);
+
 /*
 1. let queue = [{node: actor1, path: []}]; - We initialize a queue with 
 an object that has two properties: node (the current actor) and path 
