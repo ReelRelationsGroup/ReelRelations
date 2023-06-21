@@ -5,7 +5,6 @@ const Cast = require("./Cast");
 const axios = require("axios");
 
 const apiKey = "8ef1c18c56bc6d0d2ff280c6fd0b854d";
-const maxRequestsPerSecond = 50;
 
 // Define many-to-many relationship between Cast(Actor) and Movie
 Cast.belongsToMany(Movie, { through: "movie_cast" });
@@ -38,81 +37,78 @@ const fetchMovieDetails = async (movieId) => {
 
 const syncAndSeed = async () => {
   await conn.sync({ force: true });
-  const totalPages = 1000;
+  // const totalPages = 500;
 
-  let requestsMade = 0;
+  // try {
 
-  try {
-
-    for (let page = 1; page < totalPages; page++) {
-      if (requestsMade >= maxRequestsPerSecond) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        requestsMade = 0;
-      }
-
-      const popularCastMembers = await fetchPopularCastMembers(page);
-
-      for (const castMember of popularCastMembers) {
-        if (castMember.known_for_department === "Acting") {
-          const newCastMember = await Cast.create({
-            id: castMember.id,
-            known_for_department: castMember.known_for_department,
-            name: castMember.name,
-            known_for: castMember.known_for,
-            profile_path: castMember.profile_path,
-          });
-
-          for (const knownMovie of castMember.known_for) {
-            let movie = await Movie.findOne({ where: { id: knownMovie.id } });
-
-            if (!movie) {
-              const movieDetails = await fetchMovieDetails(knownMovie.id);
-
-              if (movieDetails) {
-                movie = await Movie.create({
-                  id: movieDetails.id,
-                  title: movieDetails.title,
-                  backdrop_path: movieDetails.backdrop_path,
-                  overview: movieDetails.overview,
-                  popularity: movieDetails.popularity,
-                  poster_path: movieDetails.poster_path,
-                  runtime: movieDetails.runtime,
-                  release_date: movieDetails.release_date,
-                  vote_average: movieDetails.vote_average,
-                  vote_count: movieDetails.vote_count,
-                });
-
-                for (const credit of movieDetails.credits.cast) {
-                  if (credit.known_for_department === "Acting") {
-                    const castMember = await Cast.findOne({ where: { id: credit.id } });
+  //   for (let page = 1; page < totalPages; page++) {
   
-                    if (castMember) {
-                      await movie.addCast(castMember);
-                    } else {
-                      const newCreditCastMember = await Cast.create({
-                        id: credit.id,
-                        known_for_department: credit.known_for_department,
-                        name: credit.name,
-                        profile_path: credit.profile_path,
-                      });
-                      await movie.addCast(newCreditCastMember);
-                    }
-                  }
-                }
-              }
-            }
-            if (movie) {
-              await newCastMember.addMovie(movie);
-            }
+  //     const popularCastMembers = await fetchPopularCastMembers(page);
 
-            requestsMade++;
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error during seeding:", error);
-  }
+  //     for (const castMember of popularCastMembers) {
+  //       if (castMember.known_for_department === "Acting") {
+  //         let existingCastMember = await Cast.findOne({ where: { id: castMember.id } });
+      
+  //         if (!existingCastMember) {
+  //           const newCastMember = await Cast.create({
+  //             id: castMember.id,
+  //             known_for_department: castMember.known_for_department,
+  //             name: castMember.name,
+  //             known_for: castMember.known_for,
+  //             profile_path: castMember.profile_path,
+  //           });
+      
+
+  //         for (const knownMovie of castMember.known_for) {
+  //           let movie = await Movie.findOne({ where: { id: knownMovie.id } });
+
+  //           if (!movie) {
+  //             const movieDetails = await fetchMovieDetails(knownMovie.id);
+
+  //             if (movieDetails) {
+  //               movie = await Movie.create({
+  //                 id: movieDetails.id,
+  //                 title: movieDetails.title,
+  //                 backdrop_path: movieDetails.backdrop_path,
+  //                 overview: movieDetails.overview,
+  //                 popularity: movieDetails.popularity,
+  //                 poster_path: movieDetails.poster_path,
+  //                 runtime: movieDetails.runtime,
+  //                 release_date: movieDetails.release_date,
+  //                 vote_average: movieDetails.vote_average,
+  //                 vote_count: movieDetails.vote_count,
+  //               });
+
+  //               for (const credit of movieDetails.credits.cast) {
+  //                 if (credit.known_for_department === "Acting") {
+  //                   const castMember = await Cast.findOne({ where: { id: credit.id } });
+  
+  //                   if (castMember) {
+  //                     await movie.addCast(castMember);
+  //                   } else {
+  //                     const newCreditCastMember = await Cast.create({
+  //                       id: credit.id,
+  //                       known_for_department: credit.known_for_department,
+  //                       name: credit.name,
+  //                       profile_path: credit.profile_path,
+  //                     });
+  //                     await movie.addCast(newCreditCastMember);
+  //                       }
+  //                   }
+  //                 }
+  //              }
+  //           if (movie) {
+  //             await newCastMember.addMovie(movie);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   }
+  // }
+  // } catch (error) {
+  //   console.error("Error during seeding:", error);
+  // }
 };
 
 module.exports = {

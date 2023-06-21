@@ -27,9 +27,8 @@ const Movie = conn.define(
       type: STRING,
     },
     release_date: {
-      type: DATE,
+      type: STRING,
     },
- 
     vote_average: {
       type: FLOAT,
     },
