@@ -4,7 +4,7 @@ import Login from './Login';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginWithToken, fetchCart } from '../store';
 import { Link, Routes, Route } from 'react-router-dom';
-import SingleMovie from './singleMovie';
+import SingleMovie from './SingleMovie';
 import SingleCast from './SingleCast';
 
 const App = ()=> {
