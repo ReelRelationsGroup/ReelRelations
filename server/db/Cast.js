@@ -1,30 +1,24 @@
 const conn = require("./conn");
-const { BOOLEAN, STRING, INTEGER, FLOAT } = conn.Sequelize;
+const { BOOLEAN, ARRAY, STRING, INTEGER, FLOAT } = conn.Sequelize;
 
 const Cast = conn.define(
   "cast",
   {
-    adult: {
-      type: BOOLEAN,
-      gender: INTEGER,
-      id: {
-        type: INTEGER,
-        primaryKey: true,
-      },
-      known_for_department: STRING,
-      name: STRING,
-      original_name: STRING,
-      popularity: FLOAT,
-      profile_path: STRING,
-      cast_id: INTEGER,
-      character: STRING,
-      credit_id: STRING,
-      order: INTEGER,
+    id: {
+      type: INTEGER,
+      primaryKey: true
+    },
+    known_for_department:{
+      type: STRING
+    },
+    name:{
+      type: STRING,
+      allowNull: false
+    },
+    profile_path: {
+      type: STRING,
     },
   },
-  {
-    timestamps: false, // set as false because api does not provide timestamps of when cast was added to database
-  }
 );
 
 module.exports = Cast;
