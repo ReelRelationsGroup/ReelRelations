@@ -11,7 +11,7 @@ and uses a queue data structure to achieve this.
 Here's the function:
 */
 
-function bfs(graph, actor1, actor2) {
+export const bfs = (graph, actor1, actor2) => {
   let queue = [{ node: actor1, path: [] }];
   let visited = new Set();
 
@@ -35,7 +35,7 @@ function bfs(graph, actor1, actor2) {
   }
 
   return null;
-}
+};
 
 // Using the bfs function
 let path = bfs(graph, actor1, actor2);
