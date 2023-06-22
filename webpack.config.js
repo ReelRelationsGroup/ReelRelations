@@ -1,3 +1,5 @@
+const postcssPresetEnv = require('postcss-preset-env');
+
 module.exports = {
   devtool: 'source-map',
   module: {
@@ -9,7 +11,32 @@ module.exports = {
         options: {
           presets: ['@babel/preset-react']
         }
-      }
-    ]
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  postcssPresetEnv({
+                    stage: 3,
+                    autoprefixer: { grid: true },
+                  }),
+                ],
+              },
+            },
+          },
+        ],
+      },
+    ],
   }
 };

@@ -22,14 +22,6 @@ const actorsSlice = createSlice({
       .addCase(fetchActors.fulfilled, (state, action)=>{
         return action.payload;
       })
-      .addCase(fetchActorById.fulfilled, (state, action)=>{
-        const index = state.findIndex(actor => actor.id === action.payload.id);
-          if (index !== -1) {       
-            state[index] = action.payload;
-          } else {
-            state.push(action.payload);
-          }
-      })
     }
 })
 
