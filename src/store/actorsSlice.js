@@ -8,8 +8,7 @@ export const fetchActors = createAsyncThunk('fetchActors', async()=>{
     }catch(er){
         console.log(er);
     }
-})
-
+});
 
 // what other asyncs do we need? fetching actors by movie? or are we gonna do a thing for movie_cast?
 

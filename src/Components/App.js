@@ -13,8 +13,8 @@ const App = () => {
     <div>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/movie/49026">SingleMovie</Link>
-        <Link to="/casts/85">SingleCast</Link>
+        <Link to="/movie/10196">SingleMovie</Link>
+        <Link to="/cast/85">SingleCast</Link>
       </nav>
       <h1>
         <Clapperboard />

@@ -13,6 +13,7 @@ const SingleCast = () => {
     dispatch(fetchActorById(id));
   }, [dispatch]);
 
+<<<<<<< Updated upstream
   if (!singleActor || !singleActor.movie_credits) {
     return <div>Loading...</div>;
   }
@@ -35,3 +36,21 @@ const SingleCast = () => {
 };
 
 export default SingleCast;
+=======
+    useEffect(() => {
+        dispatch(fetchActorById(id));
+    }, [dispatch])
+    
+    return (
+        <div>
+            <h1>SINGLE ACTOR</h1>
+            <h1>{singleActor.name}</h1>
+            <img src={`https://image.tmdb.org/t/p/original${singleActor.profile_path}`} />
+            <h3>Born on {singleActor.birthday}</h3>
+            <p>{singleActor.biography}</p>          
+        </div>
+    )
+}
+
+export default SingleCast;
+>>>>>>> Stashed changes

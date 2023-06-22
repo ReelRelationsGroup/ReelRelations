@@ -1,0 +1,25 @@
+import { createSlice,  createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchMovieById = createAsyncThunk('fetchMovieById', async (id) => {
+    try {
+      const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${id}?append_to_response=credits%2C%20images&language=en-US&api_key=8ef1c18c56bc6d0d2ff280c6fd0b854d`);
+      return data;
+    } catch (er) {
+      console.log(er);
+      throw er;
+    }
+});
+
+const singleMovieSlice = createSlice({
+    name: "singleMovie",
+    initialState: {},
+    reducers:{},
+    extraReducers: (builder) => {
+        builder.addCase(fetchMovieById.fulfilled, (state,action) => {
+            return action.payload
+        })
+    }
+})
+
+export default singleMovieSlice.reducer;
