@@ -4,12 +4,13 @@ const INTEGER = conn.Sequelize;
 
 // this model will link casts (actors) to movies to movie_cast
 
-const castsMovieink = conn.define("castMovieLink", {
+export const castsMovieLink = conn.define("castsMovieLink", {
   castsId: {
     type: INTEGER,
     references: {
       model: "casts", // 'cast' refers to table name
       key: "id", // 'id' refers to column name in cast table
+      through: "castsMovieLink",
     },
   },
   moviesId: {
@@ -17,6 +18,7 @@ const castsMovieink = conn.define("castMovieLink", {
     references: {
       model: "movies", // 'movies' refers to table name
       key: "id", // 'id' refers to column name in movies table
+      through: "castsMovieLink",
     },
   },
   movie_castsId: {

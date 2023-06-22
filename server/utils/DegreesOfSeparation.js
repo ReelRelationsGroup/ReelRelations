@@ -11,8 +11,8 @@ and uses a queue data structure to achieve this.
 Here's the function:
 */
 
-export const bfs = (graph, casts1, casts2) => {
-  let queue = [{ node: casts1, path: [] }];
+export const bfs = (graph, casts1Id, casts2Id) => {
+  let queue = [{ node: casts1Id, path: [] }];
   let visited = new Set();
 
   while (queue.length > 0) {
@@ -20,7 +20,7 @@ export const bfs = (graph, casts1, casts2) => {
     let node = current.node;
     let path = current.path;
 
-    if (node === casts2) {
+    if (node === casts2Id) {
       return path.concat(node);
     }
 
@@ -29,20 +29,13 @@ export const bfs = (graph, casts1, casts2) => {
 
       let neighbors = graph[node] || [];
       for (let neighbor of neighbors) {
-        queue.push({ node: neighbor, path: path.concat(node) });
+        queue.push({ node: neighbor, ppath: [...path, node] });
       }
     }
   }
 
   return null;
 };
-
-// Using the bfs function
-let path = bfs(graph, casts1, casts2);
-
-// Calculate degrees of separation
-let degreesOfSeparation = path ? path.length - 1 : null;
-console.log(`Degrees of separation: ${degreesOfSeparation}`);
 
 /*  Note CASTS replaces the word ACTOR in the code above.
 Explanation:
