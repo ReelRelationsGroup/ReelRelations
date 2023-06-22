@@ -10,15 +10,6 @@ export const fetchActors = createAsyncThunk('fetchActors', async()=>{
     }
 })
 
-export const fetchActorById = createAsyncThunk('fetchActorById', async (id) => {
-    try {
-      const { data } = await axios.get(`/api/actors/${id}`);
-      return data;
-    } catch (er) {
-      console.log(er);
-      throw er;
-    }
-});
 
 // what other asyncs do we need? fetching actors by movie? or are we gonna do a thing for movie_cast?
 
