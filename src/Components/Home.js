@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { logout } from "../store";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, Star } from "lucide-react";
 
 const Home = () => {
   const { auth } = useSelector((state) => state);
@@ -29,7 +29,9 @@ const Home = () => {
     <div>
       <h1>Home</h1>
       <div>
+        <Star />
         Welcome {auth.username} to Reel Relations!!
+        <Star />
         <button onClick={() => dispatch(logout())}>Logout</button>
       </div>
 
