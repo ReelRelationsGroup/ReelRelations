@@ -1,8 +1,8 @@
 /*
-Let's break down the code and its logic in more detail:
+Logic in more detail below:
 
 The problem at hand involves finding the shortest path 
-between two actors (actor1 and actor2) in a graph of 
+between two actors (casts1 and casts2) in a graph of 
 actors and their co-stars. The solution involves using 
 an algorithm known as Breadth-First Search (BFS), which 
 is designed to traverse a graph in a 'breadthward' motion 
@@ -11,8 +11,8 @@ and uses a queue data structure to achieve this.
 Here's the function:
 */
 
-export const bfs = (graph, actor1, actor2) => {
-  let queue = [{ node: actor1, path: [] }];
+export const bfs = (graph, casts1, casts2) => {
+  let queue = [{ node: casts1, path: [] }];
   let visited = new Set();
 
   while (queue.length > 0) {
@@ -20,7 +20,7 @@ export const bfs = (graph, actor1, actor2) => {
     let node = current.node;
     let path = current.path;
 
-    if (node === actor2) {
+    if (node === casts2) {
       return path.concat(node);
     }
 
@@ -38,13 +38,29 @@ export const bfs = (graph, actor1, actor2) => {
 };
 
 // Using the bfs function
-let path = bfs(graph, actor1, actor2);
+let path = bfs(graph, casts1, casts2);
 
 // Calculate degrees of separation
 let degreesOfSeparation = path ? path.length - 1 : null;
 console.log(`Degrees of separation: ${degreesOfSeparation}`);
 
-/*
+/*  Note CASTS replaces the word ACTOR in the code above.
+Explanation:
+1. Initialize a queue w/obj containing the starting actor and an empty path.
+2. Initialize a set to keep track of visited actors.
+3. While the queue is !empty, repeat the following steps:
+4. Take the 1st actor from the queue.
+5. Extract the current actor and the path to reach that actor.
+6. If current actor is the target actor, return the path to reach that actor.
+7. If current actor has not been visited yet, add it to the visited set and explore its co-stars.
+8. Get the co-stars of the current actor.
+9. For each co-star, add them to the queue with the path to reach them.
+10. If no path is found after exploring all reachable actors, return null.
+*/
+
+/* 
+Detailed Explanation of the BFS Function
+*****Note CASTS replaces the word ACTOR in the code above.*****
 1. let queue = [{node: actor1, path: []}]; - We initialize a queue with 
 an object that has two properties: node (the current actor) and path 
 (the path to reach that actor). Initially, the node is actor1 (the actor 
