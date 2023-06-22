@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const Movie = require("./db/Movie");
-const Cast = require("./db/Cast");
+const Casts = require("./db/Casts");
 
 app.use(express.json());
 
@@ -25,11 +25,11 @@ app.get("/api/movie/:id", async (req, res, next) => {
   }
 });
 
-// GET for a Cast Member (Actor)
+// GET for a Casts Member (Actor)
 app.get("/api/cast/:id", async (req, res, next) => {
   try {
-    const cast = await Cast.findByPk(req.params.id);
-    res.send(cast);
+    const casts = await Casts.findByPk(req.params.id);
+    res.send(casts);
   } catch (err) {
     next(err);
   }

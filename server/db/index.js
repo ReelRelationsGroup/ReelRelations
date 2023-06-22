@@ -1,14 +1,14 @@
 const conn = require("./conn");
 const User = require("./User");
 const Movie = require("./Movie");
-const Cast = require("./Cast");
+const Casts = require("./Casts");
 const axios = require("axios");
 
 const apiKey = "8ef1c18c56bc6d0d2ff280c6fd0b854d";
 
 // Define many-to-many relationship between Cast(Actor) and Movie
-Cast.belongsToMany(Movie, { through: "movie_cast" });
-Movie.belongsToMany(Cast, { through: "movie_cast" });
+Casts.belongsToMany(Movie, { through: "movie_cast" });
+Movie.belongsToMany(Casts, { through: "movie_cast" });
 
 const fetchPopularCastMembers = async (page) => {
   const url = `https://api.themoviedb.org/3/person/popular?language=en-US&page=${page}&api_key=${apiKey}`;
@@ -29,11 +29,13 @@ const fetchMovieDetails = async (movieId) => {
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching movie details for movie Id ${movieId}`, error);
+    console.error(
+      `Error fetching movie details for movie Id ${movieId}`,
+      error
+    );
     return null;
   }
 };
-
 
 const syncAndSeed = async () => {
   await conn.sync({ force: true });
@@ -42,13 +44,13 @@ const syncAndSeed = async () => {
   // try {
 
   //   for (let page = 1; page < totalPages; page++) {
-  
+
   //     const popularCastMembers = await fetchPopularCastMembers(page);
 
   //     for (const castMember of popularCastMembers) {
   //       if (castMember.known_for_department === "Acting") {
   //         let existingCastMember = await Cast.findOne({ where: { id: castMember.id } });
-      
+
   //         if (!existingCastMember) {
   //           const newCastMember = await Cast.create({
   //             id: castMember.id,
@@ -57,7 +59,6 @@ const syncAndSeed = async () => {
   //             known_for: castMember.known_for,
   //             profile_path: castMember.profile_path,
   //           });
-      
 
   //         for (const knownMovie of castMember.known_for) {
   //           let movie = await Movie.findOne({ where: { id: knownMovie.id } });
@@ -82,7 +83,7 @@ const syncAndSeed = async () => {
   //               for (const credit of movieDetails.credits.cast) {
   //                 if (credit.known_for_department === "Acting") {
   //                   const castMember = await Cast.findOne({ where: { id: credit.id } });
-  
+
   //                   if (castMember) {
   //                     await movie.addCast(castMember);
   //                   } else {
@@ -115,5 +116,5 @@ module.exports = {
   syncAndSeed,
   User,
   Movie,
-  Cast,
+  Casts,
 };
