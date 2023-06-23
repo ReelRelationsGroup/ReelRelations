@@ -10,8 +10,9 @@ app.get("/:castsId/:casts2Id", async (req, res, next) => {
     const { castsId, casts2Id } = req.params;
 
     const graph = await buildGraph();
+    console.log(castsId, casts2Id);
     // Using the bfs function to find the path between the two actors
-    let path = bfs(graph, castsId, casts2Id);
+    let path = bfs(graph, 2, 3);
 
     // Calculate degrees of separation
     let degreesOfSeparation = path ? path.length - 1 : null;
