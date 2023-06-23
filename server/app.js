@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const Movie = require("./db/Movie");
 const Casts = require("./db/Casts");
+const degreesOfSeparation = require("./api/degreesOfSeparation");
 
 app.use(express.json());
 
@@ -14,6 +15,7 @@ app.get("/", (req, res) =>
 );
 
 app.use("/api/auth", require("./api/auth"));
+app.use("/api/degreesOfSeparation", degreesOfSeparation);
 app.use("/api/movies", require("./api/movies"))
 app.use("/api/actors", require("./api/actors"));
 

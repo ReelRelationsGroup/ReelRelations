@@ -4,41 +4,43 @@ const buildGraph = async () => {
   const graph = {};
 
   try {
-    // fetch all movies
+    // Fetch all movies with casts information
     const movies = await Movie.findAll({
-      include: {
-        model: Casts,
-        through: {
-          model: castsMovieLink,
+      include: [
+        {
+          model: Casts,
+          as: "casts",
+          through: {
+            model: castsMovieLink,
+            as: "castsMovieLink",
+          },
         },
-      },
+      ],
     });
 
-    // Check if movie exist before iterationg through them
     if (!movies || movies.length === 0) {
-      throw new Error("Movie NOT FOUND In The Database");
+      throw new Error("No movies found in the database.");
     }
 
-    // Iterate through each movie and add co-casts to the graph
+    // Build the graph
     for (const movie of movies) {
-      const castsIds = movie.casts.map((casts) => casts.id);
+      const casts = movie.get("casts");
 
-      // For each casts in the movie, add edges to other casts in the same movie
-      for (const castsId of castsIds) {
-        if (!graph[castsId]) {
-          graph[castsId] = [];
+      for (const cast of casts) {
+        const castId = cast.id;
+
+        if (!graph[castId]) {
+          graph[castId] = [];
         }
 
-        // Add co-casts to the graph
-        for (const coCastsId of castsIds) {
-          if (castsId !== coCastsId && !graph[castsId].includes(coCastsId)) {
-            graph[castsId].push(coCastsId);
-          }
-        }
+        const coCasts = casts.filter((c) => c.id !== castId);
+        const coCastIds = coCasts.map((c) => c.id);
+
+        graph[castId].push(...coCastIds);
       }
     }
   } catch (error) {
-    throw new Error(`Error Building the Graph: ${error.message}`);
+    throw new Error(`Error building the graph: ${error.message}`);
   }
 
   return graph;
