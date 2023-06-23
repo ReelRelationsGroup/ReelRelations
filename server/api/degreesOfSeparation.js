@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express.Router();
 const { Casts, Movie, castsMovieLink } = require("../db");
-const { bfs } = require("../utils/DegreesOfSeparation");
+const bfs = require("../utils/DegreesOfSeparation"); // Update import statement
 const buildGraph = require("../utils/graphBuilder");
 
 // GET for degrees of separation between two actors
