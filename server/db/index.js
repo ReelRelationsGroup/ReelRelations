@@ -1,14 +1,15 @@
+require("dotenv").config();
 const conn = require("./conn");
 const User = require("./User");
 const Movie = require("./Movie");
 const Casts = require("./Casts");
 const axios = require("axios");
 
-const apiKey = "8ef1c18c56bc6d0d2ff280c6fd0b854d";
-
 // Define many-to-many relationship between Cast(Actor) and Movie
 Casts.belongsToMany(Movie, { through: "movie_cast" });
 Movie.belongsToMany(Casts, { through: "movie_cast" });
+
+const apiKey = process.env.API_KEY;
 
 const fetchPopularCastMembers = async (page) => {
   const url = `https://api.themoviedb.org/3/person/popular?language=en-US&page=${page}&api_key=${apiKey}`;
