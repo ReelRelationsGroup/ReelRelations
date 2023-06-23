@@ -41,13 +41,13 @@ const SingleCast = () => {
         <p>{singleActor.biography}</p>
       </div>
       <div className="w-full md:w-1/2">
-        <Carousel movies={currentMovies} />
+        <Carousel movies={singleActor.movie_credits.cast} />
         <ul>
           {currentMovies.map((movie) => (
-            <li key={movie.id}>{movie.title}</li>
+            <li key={movie.id}>{movie.title} {movie.popularity}</li>
           ))}
         </ul>
-        <div >
+        <div>
           {singleActor.movie_credits.cast.length > moviesPerPage && (
             <ul>
               {Array.from(
