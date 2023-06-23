@@ -14,7 +14,7 @@ const App = () => {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/movie/10196">SingleMovie</Link>
-        <Link to="/cast/85">SingleCast</Link>
+        <Link to="/casts/85">SingleCast</Link>
         <Link to="/login">Login</Link>
       </nav>
       <h1>
