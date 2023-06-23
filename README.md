@@ -1,4 +1,13 @@
-Reel Relations: The Actor Connection
+## Setup
+
+1. Clone the repository and navigate to the project directory.
+2. Install the dependencies by running `npm install`.
+3. Create a new file named `.env` in the root directory of the project.
+4. Add the following line to the `.env` file, replacing `your_api_key_here` with your actual API key:
+
+Make sure to keep the `.env` file secure and avoid committing it to version control. 5. Start the server by running `npm start`.
+
+## Reel Relations: The Actor Connection
 
 Welcome to Reel Relations!, an exciting application designed to unravel the intriguing connections between two actors and the movies they starred in. For both seasoned film enthusiasts or a coders who want to explore algorithms, this PERN Stack App offers a user-friendly gateway to explore the degrees of separation between your favorite actors.
 
