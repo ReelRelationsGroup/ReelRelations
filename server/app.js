@@ -15,21 +15,12 @@ app.get("/", (req, res) =>
 );
 
 app.use("/api/auth", require("./api/auth"));
-
 app.use("/api/degreesOfSeparation", degreesOfSeparation);
-
-// GET for a Single Movie
-app.get("/api/movie/:id", async (req, res, next) => {
-  try {
-    const movie = await Movie.findByPk(req.params.id);
-    res.send(movie);
-  } catch (err) {
-    next(err);
-  }
-});
+app.use("/api/movies", require("./api/movies"))
+app.use("/api/actors", require("./api/actors"));
 
 // GET for a Casts Member (Actor)
-app.get("/api/cast/:id", async (req, res, next) => {
+app.get("/api/casts/:id", async (req, res, next) => {
   try {
     const casts = await Casts.findByPk(req.params.id);
     res.send(casts);
