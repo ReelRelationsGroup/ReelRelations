@@ -11,7 +11,7 @@ and uses a queue data structure to achieve this.
 Here's the function:
 */
 
-export const bfs = (graph, casts1Id, casts2Id) => {
+const bfs = (graph, casts1Id, casts2Id) => {
   let queue = [{ node: casts1Id, path: [] }];
   let visited = new Set();
 
@@ -36,6 +36,8 @@ export const bfs = (graph, casts1Id, casts2Id) => {
 
   return null;
 };
+
+module.exports = bfs;
 
 /*  Note CASTS replaces the word ACTOR in the code above.
 Explanation:
