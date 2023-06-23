@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchActorById } from "../store";
+import { fetchActorById, fetchActors } from "../store";
 import Carousel from "./Carousel";
 
 const SingleCast = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { singleActor } = useSelector((state) => state);
+  const { singleActor, actors } = useSelector((state) => state);
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 15;
 
   useEffect(() => {
     dispatch(fetchActorById(id));
+    dispatch(fetchActors());
   }, [dispatch, id]);
 
   if (!singleActor || !singleActor.movie_credits) {
@@ -32,6 +33,7 @@ const SingleCast = () => {
     <div className="flex flex-col md:flex-row">
       <div className="w-full md:w-1/2">
         <h1>{singleActor.name}</h1>
+        <h1>ACTORS: {actors.length}</h1>
         <img
           className="w-52 h-75"
           src={`https://image.tmdb.org/t/p/original${singleActor.profile_path}`}
