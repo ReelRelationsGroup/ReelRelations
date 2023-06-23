@@ -25,7 +25,7 @@ export const castsMovieLink = conn.define("castsMovieLink", {
     type: INTEGER,
     references: {
       model: "movie_casts", // 'movie_casts' refers to table name
-      key: "id", // 'id' refers to column name in movie_casts table
+      key: "movieId", // 'id' refers to column name in movie_casts table
     },
   },
 });

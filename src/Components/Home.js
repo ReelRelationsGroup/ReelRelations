@@ -3,22 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { logout } from "../store";
 import { SearchIcon, Star } from "lucide-react";
+import { fetchDegreesOfSeparation } from "../utils/api";
 
 const Home = () => {
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   // state to keep track of the casts' (actors') names
-  const [casts1, setCasts1] = useState("");
-  const [casts2, setCasts2] = useState("");
+  const [castsId, setCastsId] = useState("");
+  const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
 
   // func to handle the API call
   const findLink = async () => {
     try {
-      const res = await axios.get(
-        `/api/degrees-of-separation?casts1=${casts1}&casts2=${casts2}`
-      );
+      const data = await fetchDegreesOfSeparation(castsId, casts2Id);
       setDegreesOfSeparation(res.data.degreesOfSeparation);
     } catch (err) {
       console.error(err);
@@ -42,8 +41,8 @@ const Home = () => {
         </div>
         <input
           type="text"
-          value={casts1}
-          onChange={(e) => setCasts1(e.target.value)}
+          value={castsId}
+          onChange={(e) => setCastsId(e.target.value)}
           placeholder="Enter 1st Actor"
           className="xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         />
@@ -52,8 +51,8 @@ const Home = () => {
         </div>
         <input
           type="text"
-          value={casts2}
-          onChange={(e) => setCasts2(e.target.value)}
+          value={casts2Id}
+          onChange={(e) => setCasts2Id(e.target.value)}
           placeholder="Enter 2nd Actor"
           className="xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         />
