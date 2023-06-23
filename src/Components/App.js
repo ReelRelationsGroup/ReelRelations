@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Home from "./Home";
-import Login from "./Login";
+import LoginRegister from "./LoginRegister";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Routes, Route } from "react-router-dom";
 import { Film, Clapperboard, Video } from "lucide-react";
@@ -14,7 +14,8 @@ const App = () => {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/movie/10196">SingleMovie</Link>
-        <Link to="/casts/85">SingleCast</Link>
+        <Link to="/cast/85">SingleCast</Link>
+        <Link to="/login">Login</Link>
       </nav>
       <h1>
         <Clapperboard />
@@ -30,6 +31,7 @@ const App = () => {
           path="/degrees-of-separation/:casts1Id/:casts2Id"
           element={<DegreesOfSeparation />}
         />
+        <Route path='/login' element={<LoginRegister />} />
       </Routes>
     </div>
   );

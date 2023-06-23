@@ -3,6 +3,7 @@ import logger from 'redux-logger';
 import auth from './auth';
 import singleActorSlice from "./singleActorSlice";
 import singleMovieSlice from "./singleMovieSlice";
+import user from './user';
 
 const store = configureStore({
   middleware: (defaultMiddleware)=> defaultMiddleware().concat(logger),
@@ -10,6 +11,7 @@ const store = configureStore({
     auth: auth,
     singleActor: singleActorSlice,
     singleMovie: singleMovieSlice,
+    users: user,
   }
 });
 
@@ -17,3 +19,4 @@ export default store;
 export * from './auth';
 export * from './singleActorSlice';
 export * from './singleMovieSlice';
+export * from './user';
