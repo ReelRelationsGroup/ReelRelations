@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { attemptLogin } from '../store';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { attemptLogin } from '../store';
 import { addUserProfile } from '../store/user.js';
 
 const LoginRegister = (props) => {
@@ -11,10 +11,10 @@ const LoginRegister = (props) => {
   let auth = useSelector(state => state.auth);
   
   const [credentials, setCredentials] = useState({
-    email: '',
+    username: '',
     password: ''
   });
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const onChange = (ev) => {
@@ -33,11 +33,11 @@ const LoginRegister = (props) => {
 
   const register = async (ev) => {
     ev.preventDefault();
-    await dispatch(addUserProfile({ email, password, permissions: false }));
-    credentials.email = email;
+    await dispatch(addUserProfile({ username, password, permissions: false }));
+    credentials.username = username;
     credentials.password = password;
     dispatch(attemptLogin(credentials));
-    setEmail('');
+    setUsername('');
     setPassword('');
     handleLoginFromCheckout;
     navigate('/');
@@ -51,14 +51,14 @@ const LoginRegister = (props) => {
         <form onSubmit={login}>
             {auth.error===true && (
               <div>
-                <p>Invalid email and/or password!</p>
+                <p>Invalid username and/or password!</p>
               </div>
             )}
           <div className="inputContainer">
             <input
-              placeholder="email"
-              value={credentials.email}
-              name="email"
+              placeholder="username"
+              value={credentials.username}
+              name="username"
               onChange={onChange}
             />
             <input
@@ -79,10 +79,10 @@ const LoginRegister = (props) => {
         <form onSubmit={register}>
           <div className="inputContainer">
             <input
-              placeholder="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              placeholder="username"
+              name="username"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
             />
             <input
               placeholder="password"

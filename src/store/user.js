@@ -25,18 +25,6 @@ export const addUserProfile = createAsyncThunk('addUserProfile', async(user) => 
   }
 })
 
-
-export const updateUserProfile = createAsyncThunk('updateUserProfile', async (formData) => {
-  const { id } = formData;
-  try {
-    const response = await axios.put(`/api/users/${id}`, formData);
-    return response.data;
-  } catch (error) {
-    console.log(error)
-  }
-});
-
-
 const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -51,17 +39,6 @@ const userSlice = createSlice({
         state.usersList = action.payload;
       })
       .addCase(fetchAllUsers.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload.error;
-      })
-      .addCase(updateUserProfile.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.usersList = state.usersList.map(user=>user.id === action.payload.id ? action.payload:user);
-      })
-      .addCase(updateUserProfile.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload.error;
       })

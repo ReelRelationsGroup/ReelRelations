@@ -21,3 +21,5 @@ app.get('/', async(req, res, next)=> {
     next(ex);
   }
 });
+
+module.exports = app;

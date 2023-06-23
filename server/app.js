@@ -18,6 +18,7 @@ app.use("/api/auth", require("./api/auth"));
 app.use("/api/degreesOfSeparation", degreesOfSeparation);
 app.use("/api/movies", require("./api/movies"))
 app.use("/api/actors", require("./api/actors"));
+app.use("/api/users", require("./api/user"))
 
 // GET for a Casts Member (Actor)
 app.get("/api/casts/:id", async (req, res, next) => {
