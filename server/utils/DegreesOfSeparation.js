@@ -29,7 +29,7 @@ const bfs = (graph, casts1Id, casts2Id) => {
 
       let neighbors = graph[node] || [];
       for (let neighbor of neighbors) {
-        queue.push({ node: neighbor, ppath: [...path, node] });
+        queue.push({ node: neighbor, path: [...path, node] });
       }
     }
   }
