@@ -24,8 +24,7 @@ const LoginRegister = (props) => {
   const login = (ev) => {
       ev.preventDefault();
       dispatch(attemptLogin(credentials)).then((result) => {
-        console.log(result.payload.error);
-        if (result.payload.error===false) {
+        if (result.payload.id) {
           navigate('/');
         }
       });
