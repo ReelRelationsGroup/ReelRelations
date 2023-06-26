@@ -12,12 +12,14 @@ const Home = () => {
   const [casts1Id, setCasts1Id] = useState("");
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
+  const [path, setPath] = useState(null)
 
   // func to handle the API call
   const findLink = async () => {
     try {
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
       setDegreesOfSeparation(response.degreesOfSeparation);
+      setPath(response.path)
     } catch (err) {
       console.error(err);
     }
@@ -61,6 +63,9 @@ const Home = () => {
       {/* displays the degrees of separation */}
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
+      )}
+      {path !== null && (
+        <div>Path Array: {path}</div>
       )}
     </div>
   );

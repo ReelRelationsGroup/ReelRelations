@@ -27,7 +27,7 @@ app.get("/:castsId/:casts2Id", async (req, res, next) => {
     let degreesOfSeparation = path ? path.length - 1 : null;
 
     // Sending the result as a JSON response
-    res.json({ degreesOfSeparation });
+    res.json({ degreesOfSeparation, path });
   } catch (error) {
     next(error);
   }
