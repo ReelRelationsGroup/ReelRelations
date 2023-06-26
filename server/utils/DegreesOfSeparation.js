@@ -1,3 +1,4 @@
+const getCommonMovie = require ("../api/getCommonMovie")
 /*
 Logic in more detail below:
 
@@ -21,6 +22,13 @@ const bfs = (graph, casts1Id, casts2Id) => {
     let path = current.path;
 
     if (node === casts2Id) {
+      console.log(path)
+      console.log(path.concat(node))
+      let pathArray = path.concat(node);
+      for (let i = 0; i < pathArray.length; i++){
+        getCommonMovie(pathArray[i], pathArray[i+1])
+
+      }
       return path.concat(node);
     }
 
@@ -33,7 +41,7 @@ const bfs = (graph, casts1Id, casts2Id) => {
       }
     }
   }
-
+  
   return null;
 };
 
