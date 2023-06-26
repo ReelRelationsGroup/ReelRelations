@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
+import { logout } from "../store";
 
 const Navbar = () => {
+    const dispatch = useDispatch();
     const token = window.localStorage.getItem("token");
+    const { auth } = useSelector((state) => state);
     const [isMenuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -61,14 +65,25 @@ const Navbar = () => {
                         Single Movie
                     </Link>
                 </div>
-                <div>
-                <Link
-                    to="/login"
-                    className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-                >
-                    Login
-                </Link>
-                </div>
+                {auth.id ? (
+                    <div>
+                    <button 
+                        onClick={() => dispatch(logout())}
+                        className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+                    >
+                        Logout
+                    </button>
+                    </div>
+                ) : (
+                    <div>
+                    <Link
+                        to="/login"
+                        className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+                    >
+                        Login
+                    </Link>
+                    </div>
+                )}
             </div>
         </nav>
     );

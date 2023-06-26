@@ -37,7 +37,6 @@ const Home = () => {
         <Star />
         Welcome {auth.username} to Reel Relations!!
         <Star />
-        <button onClick={() => dispatch(logout())}>Logout</button>
       </div>
 
       {/* input fields for casts' (actor) names */}
