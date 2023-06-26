@@ -40,6 +40,8 @@ const fetchMovieDetails = async (movieId) => {
 
 const syncAndSeed = async () => {
   await conn.sync({ force: false });
+  //User.create({username: 'moe', password:'123'});
+
   // const totalPages = 500;
 
   // try {
