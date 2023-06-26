@@ -7,16 +7,13 @@ import { Film, Clapperboard, Video } from "lucide-react";
 import SingleMovie from "./singleMovie";
 import SingleCast from "./SingleCast";
 import DegreesOfSeparation from "./DegreesOfSeparation";
+import Navbar from "./Navbar";
+import About from "./About";
 
 const App = () => {
   return (
     <div>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/movie/10196">SingleMovie</Link>
-        <Link to="/casts/85">SingleCast</Link>
-        <Link to="/login">Login</Link>
-      </nav>
+      <Navbar />
       <h1>
         <Clapperboard />
         Reel Relations
@@ -31,6 +28,7 @@ const App = () => {
           path="/degrees-of-separation/:casts1Id/:casts2Id"
           element={<DegreesOfSeparation />}
         />
+        <Route path='/about' element={<About /> } /> 
         <Route path='/login' element={<LoginRegister />} />
       </Routes>
     </div>
