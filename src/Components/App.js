@@ -4,7 +4,7 @@ import LoginRegister from "./LoginRegister";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Routes, Route } from "react-router-dom";
 import { Film, Clapperboard, Video } from "lucide-react";
-import SingleMovie from "./singleMovie";
+import SingleMovie from "./SingleMovie";
 import SingleCast from "./SingleCast";
 import DegreesOfSeparation from "./DegreesOfSeparation";
 import Navbar from "./Navbar";
