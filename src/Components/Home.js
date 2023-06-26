@@ -13,6 +13,7 @@ const Home = () => {
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
   const [path, setPath] = useState(null);
+  const [pathDetails, setPathDetails] = useState([]);
 
   // Helper function to capitalize the first letter of every word
   const capitalizeFirstLetter = (str) => {
@@ -69,7 +70,17 @@ const Home = () => {
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
-      {path !== null && <div>Path Array: {path}</div>}
+      {path !== null && (
+        <div>
+          Path Array:{" "}
+          {path.map((castId, index) => (
+            <span key={castId}>
+              {index > 0 && "& "}
+              casts.id: {castId} {pathDetails[index]}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
