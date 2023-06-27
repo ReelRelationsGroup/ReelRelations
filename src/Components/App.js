@@ -10,6 +10,7 @@ import DegreesOfSeparation from "./DegreesOfSeparation";
 import Navbar from "./Navbar";
 import About from "./About";
 import { PageNotFound } from "./PageNotFound";
+import Favorites from "./Favorites";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           element={<DegreesOfSeparation />}
         />
         <Route path="/about" element={<About />} />
+        <Route path="/favorites" element={<Favorites />} /> 
         <Route path="/login" element={<LoginRegister />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
