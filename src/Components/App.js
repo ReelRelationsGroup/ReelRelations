@@ -16,12 +16,6 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <h1>
-        <Clapperboard />
-        <div className="ml-8"> Reel Relations </div>
-        <Video /> <Film />
-      </h1>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<SingleMovie />} />

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
 
@@ -32,14 +31,10 @@ const Home = () => {
 
   return (
     <div>
-      <h1 className="ml-8">Home</h1>
-      <div>
+      <div className="flex">
         <Star />
-        <div className="ml-8">Welcome {auth.username} to Reel Relations!! </div>
+        <div className="ml-3 mr-3 mb-4">Welcome {auth.username} to Reel Relations!! </div>
         <Star />
-        <button onClick={() => dispatch(logout())} className="ml-8">
-          Logout
-        </button>
       </div>
 
       {/* Input fields for casts' (actors') names */}
