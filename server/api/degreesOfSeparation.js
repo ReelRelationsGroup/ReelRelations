@@ -3,6 +3,7 @@ const app = express.Router();
 const { Casts, Movie, castsMovieLink } = require("../db");
 const bfs = require("../utils/DegreesOfSeparation"); // Update import statement
 const buildGraph = require("../utils/graphBuilder");
+const getCommonMovie = require ("../api/getCommonMovie")
 
 // GET for degrees of separation between two actors
 app.get("/:castsId/:casts2Id", async (req, res, next) => {
@@ -26,8 +27,15 @@ app.get("/:castsId/:casts2Id", async (req, res, next) => {
     // Calculate degrees of separation
     let degreesOfSeparation = path ? path.length - 1 : null;
 
+    let moviesPath = [];
+    for (let i = 0; i < path.length; i++){
+      if (path[i+1]) {
+        moviesPath.push(getCommonMovie(path[i], path[i+1]))
+      }
+    }
+
     // Sending the result as a JSON response
-    res.json({ degreesOfSeparation, path });
+    res.json({ degreesOfSeparation, path, moviesPath });
   } catch (error) {
     next(error);
   }
