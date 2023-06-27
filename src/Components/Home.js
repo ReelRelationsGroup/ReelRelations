@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
+import Spinner from "./Spinner";
 
 const Home = () => {
+  const [loading, setLoading] = useState(false);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -22,11 +24,14 @@ const Home = () => {
   // Function to handle the API call
   const findLink = async () => {
     try {
+      setLoading(true);
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
       setDegreesOfSeparation(response.degreesOfSeparation);
       setPath(response.path);
+      setLoading(false);
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 
@@ -77,6 +82,7 @@ const Home = () => {
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
       {path !== null && <div>Path Array: {path}</div>}
+      {loading && <Spinner />}
     </div>
   );
 };
