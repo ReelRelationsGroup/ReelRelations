@@ -1,11 +1,25 @@
 const express = require("express");
 const app = express.Router();
 const { Casts, Movie, castsMovieLink } = require("../db");
-
+const { Op } = require("sequelize");
 
 async function getCommonMovie(actor1, actor2) {
     try {
       // Find movies involving actor1
+      // const commonMovies = await Movie.findAll({
+      //   include: [
+      //     {
+      //       model: Casts,
+      //       where: {
+      //         [Op.or]: [
+      //           {id: [actor1]},
+      //           {id: [actor2]}
+      //         ]
+      //       },
+      //     },
+      //   ],
+      // });
+      
       const movies1 = await Movie.findAll({
         include: [
           {
@@ -34,18 +48,15 @@ async function getCommonMovie(actor1, actor2) {
         }
         return false;
       }
-      let commonMovies = movies1.filter(movie => filterFunc(movie, movies2))
+      const commonMovies = movies1.filter(movie => filterFunc(movie, movies2))
       // Find movies involving actor2 and also appeared in actor1's movies
-
-
-    //   const commonMovies = actor1Movies.filter(movie => 
-    //     {console.log(movie.dataValues.casts.dataValues);
-    //         return movie.dataValues.casts.includes(actor2)});
-      console.log(commonMovies)
+      
+      //console.log(commonMovies)
       return commonMovies;
     } catch (error) {
       console.error('Error retrieving common movies:', error);
       throw error;
     }
   }
-    module.exports = getCommonMovie;
+  
+module.exports= getCommonMovie;

@@ -3,7 +3,7 @@ const app = express.Router();
 const { Casts, Movie, castsMovieLink } = require("../db");
 const bfs = require("../utils/DegreesOfSeparation"); // Update import statement
 const buildGraph = require("../utils/graphBuilder");
-const getCommonMovie = require ("../api/getCommonMovie")
+const getCommonMovie = require ("./getCommonMovie")
 
 // GET for degrees of separation between two actors
 app.get("/:castsId/:casts2Id", async (req, res, next) => {
@@ -30,7 +30,8 @@ app.get("/:castsId/:casts2Id", async (req, res, next) => {
     let moviesPath = [];
     for (let i = 0; i < path.length; i++){
       if (path[i+1]) {
-        moviesPath.push(getCommonMovie(path[i], path[i+1]))
+        const commonMovies = await getCommonMovie(path[i], path[i+1]);
+        moviesPath.push(commonMovies);
       }
     }
 
