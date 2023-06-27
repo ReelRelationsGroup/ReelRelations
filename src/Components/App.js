@@ -12,6 +12,7 @@ import About from "./About";
 import { PageNotFound } from "./PageNotFound";
 import Spinner from "./Spinner";
 import Favorites from "./Favorites";
+import Footer from "./Footer";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -24,20 +25,23 @@ const App = () => {
 
   return (
     <div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movie/:id" element={<SingleMovie />} />
-        <Route path="/casts/:id" element={<SingleCast />} />
-        <Route
-          path="/degrees-of-separation/:casts1Id/:casts2Id"
-          element={<DegreesOfSeparation />}
-        />
-        <Route path="/about" element={<About />} />
-        <Route path="/favorites" element={<Favorites />} /> 
-        <Route path="/login" element={<LoginRegister />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movie/:id" element={<SingleMovie />} />
+          <Route path="/casts/:id" element={<SingleCast />} />
+          <Route
+            path="/degrees-of-separation/:casts1Id/:casts2Id"
+            element={<DegreesOfSeparation />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/login" element={<LoginRegister />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 };
