@@ -11,6 +11,7 @@ import Navbar from "./Navbar";
 import About from "./About";
 import { PageNotFound } from "./PageNotFound";
 import Spinner from "./Spinner";
+import Favorites from "./Favorites";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ const App = () => {
           element={<DegreesOfSeparation />}
         />
         <Route path="/about" element={<About />} />
+        <Route path="/favorites" element={<Favorites />} /> 
         <Route path="/login" element={<LoginRegister />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
