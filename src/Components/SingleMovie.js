@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink } from "react-router-dom";
 import { fetchMovieById } from "../store";
+import Spinner from "./Spinner";
 
 const SingleMovie = () => {
   const dispatch = useDispatch();
@@ -14,11 +15,13 @@ const SingleMovie = () => {
 
   return !singleMovie.title ? (
     <>
+      <Spinner /> {/* Display the Spinner component when the data is loading */}
       <h1 className="flex flex-wrap justify-center text-2xL">
-        <div>
+        <div className="flex justify-center items-center">
           <img
-            src="https://cdn.dribbble.com/users/8805637/screenshots/16312153/media/d1dbc1c5e61313fc5c81b65f8540c8e3.gif"
-            alt="Animated GIF"
+            className="max-w-sm"
+            src="https://cdn.dribbble.com/users/2882885/screenshots/7861928/media/a4c4da396c3da907e7ed9dd0b55e5031.gif"
+            alt="Loading..."
           />
         </div>
         You're Lost Buddy - Movie Not Found

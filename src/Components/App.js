@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./Home";
 import LoginRegister from "./LoginRegister";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,8 +10,17 @@ import DegreesOfSeparation from "./DegreesOfSeparation";
 import Navbar from "./Navbar";
 import About from "./About";
 import { PageNotFound } from "./PageNotFound";
+import Spinner from "./Spinner";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // initial data loading here
+    // when loaded then set loading to false
+    setLoading(false);
+  }, []);
+
   return (
     <div>
       <Navbar />
