@@ -9,6 +9,7 @@ import SingleCast from "./SingleCast";
 import DegreesOfSeparation from "./DegreesOfSeparation";
 import Navbar from "./Navbar";
 import About from "./About";
+import { PageNotFound } from "./PageNotFound";
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
       <Navbar />
       <h1>
         <Clapperboard />
-        Reel Relations
+        <div className="ml-8"> Reel Relations </div>
         <Video /> <Film />
       </h1>
 
@@ -28,8 +29,9 @@ const App = () => {
           path="/degrees-of-separation/:casts1Id/:casts2Id"
           element={<DegreesOfSeparation />}
         />
-        <Route path='/about' element={<About /> } /> 
-        <Route path='/login' element={<LoginRegister />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<LoginRegister />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );

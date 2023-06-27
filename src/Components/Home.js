@@ -19,7 +19,7 @@ const Home = () => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
-  // func to handle the API call
+  // Function to handle the API call
   const findLink = async () => {
     try {
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
@@ -32,15 +32,18 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Home</h1>
+      <h1 className="ml-8">Home</h1>
       <div>
         <Star />
-        Welcome {auth.username} to Reel Relations!!
+        <div className="ml-8">Welcome {auth.username} to Reel Relations!! </div>
         <Star />
+        <button onClick={() => dispatch(logout())} className="ml-8">
+          Logout
+        </button>
       </div>
 
-      {/* input fields for casts' (actor) names */}
-      <div className="join">
+      {/* Input fields for casts' (actors') names */}
+      <div className="flex flex-wrap justify-center join">
         <div className="btn btn-square join-item" disabled>
           <SearchIcon size={24} className="text-black" />
         </div>
@@ -61,10 +64,15 @@ const Home = () => {
           placeholder="Enter 2nd Actor"
           className="xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         />
-        <button onClick={findLink}>Find Link</button>
+        <button
+          className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+          onClick={findLink}
+        >
+          Find Link
+        </button>
       </div>
 
-      {/* displays the degrees of separation */}
+      {/* Displays the degrees of separation */}
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
