@@ -19,15 +19,7 @@ app.use("/api/degreesOfSeparation", degreesOfSeparation);
 app.use("/api/movies", require("./api/movies"))
 app.use("/api/actors", require("./api/actors"));
 app.use("/api/users", require("./api/user"))
+app.use("/api/favorites", require("./api/favorites"))
 
-// GET for a Casts Member (Actor)
-app.get("/api/casts/:id", async (req, res, next) => {
-  try {
-    const casts = await Casts.findByPk(req.params.id);
-    res.send(casts);
-  } catch (err) {
-    next(err);
-  }
-});
 
 module.exports = app;

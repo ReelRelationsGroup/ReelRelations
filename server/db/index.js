@@ -4,10 +4,17 @@ const User = require("./User");
 const Movie = require("./Movie");
 const Casts = require("./Casts");
 const axios = require("axios");
+const { FavoriteCasts, FavoriteMovies } = require("./Favorites");
 
 // Define many-to-many relationship between Cast(Actor) and Movie
 Casts.belongsToMany(Movie, { through: "movie_cast" });
 Movie.belongsToMany(Casts, { through: "movie_cast" });
+
+User.hasMany(FavoriteCasts);
+User.hasMany(FavoriteMovies);
+
+FavoriteMovies.belongsTo(User);
+FavoriteCasts.belongsTo(User);
 
 const apiKey = process.env.API_KEY;
 
