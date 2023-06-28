@@ -3,13 +3,20 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 const Carousel = ({ movies }) => {
   const filteredMovies = movies.filter((movie) => movie.popularity > 0);
-  const sortedPopularity = filteredMovies.length < 10 ? filteredMovies : filteredMovies.sort((movie1, movie2) => movie2.popularity - movie1.popularity).slice(0, 10);
+  const sortedPopularity =
+    filteredMovies.length < 10
+      ? filteredMovies
+      : filteredMovies
+          .sort((movie1, movie2) => movie2.popularity - movie1.popularity)
+          .slice(0, 10);
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
   const prevSlide = () => {
     const isFirstSlide = currentIdx === 0;
-    const newIndex = isFirstSlide ? sortedPopularity.length - 1 : currentIdx - 1;
+    const newIndex = isFirstSlide
+      ? sortedPopularity.length - 1
+      : currentIdx - 1;
     setCurrentIdx(newIndex);
   };
 
