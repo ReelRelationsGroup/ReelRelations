@@ -1,5 +1,5 @@
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit");
-const { axios } = require("axios");
+const axios = require("axios");
 
 
 const fetchFavoriteCasts = createAsyncThunk('getFavoriteCasts', async () => {
@@ -16,10 +16,10 @@ const fetchFavoriteCasts = createAsyncThunk('getFavoriteCasts', async () => {
     }
 });
 
-const addFavoriteCast = createAsyncThunk('addFavoriteCast', async () => {
+const addFavoriteCast = createAsyncThunk('addFavoriteCast', async (castId) => {
     try {
         const token = window.localStorage.getItem("token");
-        const response = await axios.post("/api/favorites/cast", {
+        const response = await axios.post("/api/favorites/cast",{castId}, {
             headers: {
                 authorization: token
             }

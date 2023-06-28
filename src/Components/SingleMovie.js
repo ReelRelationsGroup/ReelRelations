@@ -1,19 +1,44 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useParams, NavLink } from "react-router-dom";
-import { fetchMovieById } from "../store";
+import { addFavoriteMovie, deleteFavoriteMovie, fetchFavoriteMovies, fetchMovieById } from "../store";
+import Spinner from "./Spinner";
 
 const SingleMovie = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { singleMovie } = useSelector((state) => state);
+  const { singleMovie, favoriteMovies, auth } = useSelector((state) => state);
+
+  const isMovieInFavorites = (movieId) => {
+    if (favoriteMovies.length === 0) {
+      return false; 
+    }
+  
+    return favoriteMovies.some((movie) => {
+      return movie.movieId === movieId;
+    });
+  };
+
+  const handleToggleFavorite = (movieId) => {
+    if (isMovieInFavorites(movieId)) {
+      dispatch(deleteFavoriteMovie(movieId));
+    } else {
+      dispatch(addFavoriteMovie(movieId));
+    }
+    dispatch(fetchFavoriteMovies());
+  };
 
   useEffect(() => {
     dispatch(fetchMovieById(id));
+    dispatch(fetchFavoriteMovies());
   }, [dispatch, id]);
 
-  return !singleMovie.title ? (
+  return !singleMovie.id ? (
     <>
+      <Spinner />
       <h1 className="flex flex-wrap justify-center text-2xL">
         <div>
           <img
@@ -33,7 +58,19 @@ const SingleMovie = () => {
   ) : (
     <div>
       <h1>SINGLE MOVIE</h1>
-      <h1>{singleMovie.title}</h1>
+      <h1>
+        {singleMovie.title}
+        {auth.username && (
+          <span >
+          {isMovieInFavorites(singleMovie.id) ? (
+            <FontAwesomeIcon icon={solidHeart} onClick={() => handleToggleFavorite(singleMovie.id)} />
+          ) : (
+            <FontAwesomeIcon icon={regularHeart} onClick={() => handleToggleFavorite(singleMovie.id)}/>
+          )}
+        </span>
+        )
+        }
+      </h1>
       <img
         src={`https://image.tmdb.org/t/p/original${singleMovie.poster_path}`}
         alt="Movie Poster"

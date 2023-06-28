@@ -1,5 +1,4 @@
-const { User } = require("lucide-react");
-const { Movie, Casts } = require("../db");
+const { Movie, Casts, User } = require("../db");
 const express = require('express');
 const { FavoriteMovies, FavoriteCasts } = require("../db/Favorites");
 const app = express.Router();
@@ -21,6 +20,7 @@ app.get('/movies', async (req,res,next) => {
         next(e);
     }
 });
+
 
 app.get('/casts', async (req,res,next) => {
     try {
@@ -77,7 +77,7 @@ app.delete('/movie/:id', async (req, res, next) => {
         });
         await favorite.destroy();
         res.send(favorite);
-    } catch (next) {
+    } catch (e) {
         next(e);
     }
 });
@@ -93,7 +93,7 @@ app.delete('/cast/:id', async (req, res, next) => {
         });
         await favorite.destroy();
         res.send(favorite);
-    } catch (next) {
+    } catch (e) {
         next(e);
     }
 });

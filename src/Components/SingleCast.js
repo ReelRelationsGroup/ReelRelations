@@ -1,19 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink } from "react-router-dom";
-import { fetchActorById, fetchActors } from "../store";
+import { fetchActorById, fetchFavoriteCasts, addFavoriteCast, deleteFavoriteCast } from "../store";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import Carousel from "./Carousel";
 
 const SingleCast = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { singleActor, actors } = useSelector((state) => state);
+  const { singleActor, favoriteCasts, auth } = useSelector((state) => state);
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 15;
 
+  const isActorInFavorites = (actorId) => {
+    if (favoriteCasts.length === 0) {
+      return false; 
+    }
+    console.log("ACTOR ID = ====== " + actorId)
+    return favoriteCasts.some((actor) => {
+      return actor.actorId === actorId;
+    });
+  };
+
+  const handleToggleFavorite = (actorId) => {
+    if (isActorInFavorites(actorId)) {
+      dispatch(deleteFavoriteCast(actorId));
+    } else {
+      dispatch(addFavoriteCast(actorId));
+    }
+    dispatch(fetchFavoriteCasts());
+  };
+
   useEffect(() => {
     dispatch(fetchActorById(id));
-    dispatch(fetchActors());
+    dispatch(fetchFavoriteCasts());
   }, [dispatch, id]);
 
   if (!singleActor || !singleActor.movie_credits) {
@@ -51,7 +73,15 @@ const SingleCast = () => {
     <div className="flex flex-col md:flex-row">
       <div className="w-full md:w-1/2">
         <h1>{singleActor.name}</h1>
-        <h1>ACTORS: {actors.length}</h1>
+        {auth.username && (
+          <span >
+          {isActorInFavorites(singleActor.id) ? (
+            <FontAwesomeIcon icon={solidHeart} onClick={() => handleToggleFavorite(singleActor.id)} />
+          ) : (
+            <FontAwesomeIcon icon={regularHeart} onClick={() => handleToggleFavorite(singleActor.id)}/>
+          )}
+        </span>
+        )}
         <img
           className="w-52 h-75"
           src={`https://image.tmdb.org/t/p/original${singleActor.profile_path}`}
