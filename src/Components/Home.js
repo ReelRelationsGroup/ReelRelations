@@ -85,8 +85,17 @@ const Home = () => {
 
       {/* Displays the degrees of separation */}
       {degreesOfSeparation !== null && (
-        <div>Degrees of Separation: {degreesOfSeparation}</div>
+        <div>Degrees of Separations: {degreesOfSeparation}</div>
       )}
+      {someActors.map(actor => (
+          <div>
+            <Link
+            to={`/casts/${actor.id}`}
+            >
+              {actor.name}
+            </Link>
+          </div>
+      ))}
       {loading && <Spinner />}
     </div>
   );
