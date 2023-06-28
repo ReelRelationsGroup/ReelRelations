@@ -6,6 +6,7 @@ import favoriteCastsSlice from "./favoriteCastsSlice";
 import favoriteMoviesSlice from "./favoriteMoviesSlice";
 import moviesSlice from "./moviesSlice";
 import singleActorSlice from "./singleActorSlice";
+import someActorsSlice from "./someActorsSlice"
 import singleMovieSlice from "./singleMovieSlice";
 import user from './user';
 
@@ -14,6 +15,7 @@ const store = configureStore({
   reducer:{
     auth: auth,
     singleActor: singleActorSlice,
+    someActors: someActorsSlice,
     singleMovie: singleMovieSlice,
     users: user,
     movies: moviesSlice,
@@ -26,6 +28,7 @@ const store = configureStore({
 export default store;
 export * from './auth';
 export * from './singleActorSlice';
+export * from './someActorsSlice'
 export * from './singleMovieSlice';
 export * from './user';
 export * from './moviesSlice';
