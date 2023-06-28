@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { logout, fetchSomeActors, clearSomeActors } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
@@ -15,11 +15,11 @@ const Home = () => {
   const [casts1Id, setCasts1Id] = useState("");
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
-  const [path, setPath] = useState([])
-  const [moviesPath, setMoviesPath] = useState(null)
+  const [path, setPath] = useState([]);
+  const [moviesPath, setMoviesPath] = useState(null);
 
   useEffect(() => {
-    for (let i=0;i<path.length;i++) {
+    for (let i = 0; i < path.length; i++) {
       dispatch(fetchSomeActors(path[i]));
     }
   }, [path]);
@@ -35,9 +35,9 @@ const Home = () => {
       setLoading(true);
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
       setDegreesOfSeparation(response.degreesOfSeparation);
-      setPath(response.path)
-      setMoviesPath(response.moviesPath)
-      dispatch(clearSomeActors())
+      setPath(response.path);
+      setMoviesPath(response.moviesPath);
+      dispatch(clearSomeActors());
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -49,9 +49,15 @@ const Home = () => {
     <div>
       <div className="flex">
         <Star />
-        <div className="ml-3 mr-3 mb-4">Welcome {auth.username} to Reel Relations!! </div>
+        <div className="ml-3 mr-3 mb-4 text-3xl">
+          Welcome {auth.username} to Reel Relations!!{" "}
+        </div>
         <Star />
       </div>
+      <p className="my-6 mx-20 flex flex-wrap justify-center items-center">
+        Discover the Enchanting World of Hollywood & Cinema From Across the
+        Globe & Uncover Why It's All About Who You Know
+      </p>
 
       {/* Input fields for casts' (actors') names */}
       <div className="flex flex-wrap justify-center join">
