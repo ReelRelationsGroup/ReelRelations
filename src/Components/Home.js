@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
-import { logout, fetchSomeActors, fetchActors } from "../store";
+import { logout, fetchSomeActors, clearSomeActors } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
 
@@ -29,6 +29,7 @@ const Home = () => {
       setDegreesOfSeparation(response.degreesOfSeparation);
       setPath(response.path)
       setMoviesPath(response.moviesPath)
+      dispatch(clearSomeActors())
     } catch (err) {
       console.error(err);
     }

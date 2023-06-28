@@ -11,6 +11,15 @@ export const fetchSomeActors = createAsyncThunk('fetchSomeActors', async (id) =>
     }
 });
 
+export const clearSomeActors = createAsyncThunk('clearSomeActors',async() => {
+    try {
+        const empty = [];
+        return empty;
+    } catch (er) {
+        console.log(er)
+    }
+})
+
 const someActorsSlice = createSlice({
     name: "someActors",
     initialState: [],
@@ -18,6 +27,9 @@ const someActorsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchSomeActors.fulfilled, (state,action) => {
             state.push(action.payload)
+        })
+        builder.addCase(clearSomeActors.fulfilled, (state,action) => {
+            return action.payload
         })
     }
 })
