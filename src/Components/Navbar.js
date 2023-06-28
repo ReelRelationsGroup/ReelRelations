@@ -3,16 +3,50 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import { logout } from "../store";
 import { Clapperboard } from 'lucide-react';
+import user from '../store/user';
 
 const Navbar = () => {
     const dispatch = useDispatch();
-    const token = window.localStorage.getItem("token");
     const { auth } = useSelector((state) => state);
     const [isMenuOpen, setMenuOpen] = useState(false);
-
+    const [profileOpen, setProfileOpen] = useState(false);
+    
     const toggleMenu = () => {
         setMenuOpen(!isMenuOpen);
     };
+
+    const renderAuthButtons = () => {
+        if(auth.username) {
+            return (
+                <div className="relative"> 
+                    <button onClick={() => setProfileOpen(!profileOpen)} className="block border-2 border-gray-600 focus:outline-none focus:border-white">
+                        Welcome {auth.username}
+                    </button>
+                    {profileOpen && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg py-2 shadow-md">
+                        <Link to="/favorites" className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">My Favorites</Link>
+                        <button 
+                            onClick={() => dispatch(logout())}
+                            className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white" >
+                            Logout
+                        </button>
+                    </div>
+                    )}
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <Link
+                        to="/login"
+                        className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+                    >
+                        Login
+                    </Link>
+                </div>
+            )
+        }  
+    }
 
     return (
         <nav className="flex items-center justify-between flex-wrap p-6">
@@ -35,6 +69,9 @@ const Navbar = () => {
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                 </svg>
                 </button>
+            </div>
+            <div>
+
             </div>
             <div
                 className={`${
@@ -67,25 +104,7 @@ const Navbar = () => {
                         Single Movie
                     </Link>
                 </div>
-                {auth.id ? (
-                    <div>
-                    <button 
-                        onClick={() => dispatch(logout())}
-                        className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-                    >
-                        Logout
-                    </button>
-                    </div>
-                ) : (
-                    <div>
-                    <Link
-                        to="/login"
-                        className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-                    >
-                        Login
-                    </Link>
-                    </div>
-                )}
+               {renderAuthButtons()} 
             </div>
         </nav>
     );
