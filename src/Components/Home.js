@@ -74,12 +74,12 @@ const Home = () => {
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
-      {path.map(actorId => (
+      {someActors.map(actor => (
           <div>
             <Link
-              to={`/casts/${actorId}`}
+              to={`/casts/${actor.id}`}
             >
-              {actorId}
+              {actor.name}
             </Link>
           </div>
         ))
