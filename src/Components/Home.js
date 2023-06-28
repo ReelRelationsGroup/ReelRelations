@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../store";
+import { Link } from 'react-router-dom';
+import { logout, fetchSomeActors, fetchActors } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
 
 const Home = () => {
-  const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const { auth, someActors } = useSelector((state) => state);
 
   // state to keep track of the casts' (actors') names
   const [casts1Id, setCasts1Id] = useState("");
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
-  const [path, setPath] = useState(null)
+  const [path, setPath] = useState([])
+  const [moviesPath, setMoviesPath] = useState(null)
+
+  useEffect(() => {
+    for (let i=0;i<path.length;i++) {
+      dispatch(fetchSomeActors(path[i]));
+    }
+  }, [path]);
 
   // func to handle the API call
   const findLink = async () => {
@@ -20,6 +28,7 @@ const Home = () => {
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
       setDegreesOfSeparation(response.degreesOfSeparation);
       setPath(response.path)
+      setMoviesPath(response.moviesPath)
     } catch (err) {
       console.error(err);
     }
@@ -64,9 +73,16 @@ const Home = () => {
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
-      {path !== null && (
-        <div>Path Array: {path}</div>
-      )}
+      {path.map(actorId => (
+          <div>
+            <Link
+              to={`/casts/${actorId}`}
+            >
+              {actorId}
+            </Link>
+          </div>
+        ))
+      }
     </div>
   );
 };
