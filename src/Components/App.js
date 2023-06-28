@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./Home";
 import LoginRegister from "./LoginRegister";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,31 +10,38 @@ import DegreesOfSeparation from "./DegreesOfSeparation";
 import Navbar from "./Navbar";
 import About from "./About";
 import { PageNotFound } from "./PageNotFound";
+import Spinner from "./Spinner";
 import Favorites from "./Favorites";
+import Footer from "./Footer";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // initial data loading here
+    // when loaded then set loading to false
+    setLoading(false);
+  }, []);
+
   return (
     <div>
-      <Navbar />
-      <h1>
-        <Clapperboard />
-        <div className="ml-8"> Reel Relations </div>
-        <Video /> <Film />
-      </h1>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movie/:id" element={<SingleMovie />} />
-        <Route path="/casts/:id" element={<SingleCast />} />
-        <Route
-          path="/degrees-of-separation/:casts1Id/:casts2Id"
-          element={<DegreesOfSeparation />}
-        />
-        <Route path="/about" element={<About />} />
-        <Route path="/favorites" element={<Favorites />} /> 
-        <Route path="/login" element={<LoginRegister />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movie/:id" element={<SingleMovie />} />
+          <Route path="/casts/:id" element={<SingleCast />} />
+          <Route
+            path="/degrees-of-separation/:casts1Id/:casts2Id"
+            element={<DegreesOfSeparation />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/login" element={<LoginRegister />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 };

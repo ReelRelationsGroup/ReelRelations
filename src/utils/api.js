@@ -9,6 +9,6 @@ export const fetchDegreesOfSeparation = async (casts1Id, casts2Id) => {
     return response.data;
   } catch (err) {
     console.error(err);
-    return { degreesOfSeparation: null };
+    return { degreesOfSeparation: null, path: [], moviesPath: [] };
   }
 };

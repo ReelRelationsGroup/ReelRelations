@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../store";
+import { Link } from 'react-router-dom';
+import { logout, fetchSomeActors, clearSomeActors } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
+import Spinner from "./Spinner";
 
 const Home = () => {
-  const { auth } = useSelector((state) => state);
+  const [loading, setLoading] = useState(false);
+  const { auth, someActors } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   // state to keep track of the casts' (actors') names
   const [casts1Id, setCasts1Id] = useState("");
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
-  const [path, setPath] = useState(null);
+  const [path, setPath] = useState([])
+  const [moviesPath, setMoviesPath] = useState(null)
+
+  useEffect(() => {
+    for (let i=0;i<path.length;i++) {
+      dispatch(fetchSomeActors(path[i]));
+    }
+  }, [path]);
 
   // Helper function to capitalize the first letter of every word
   const capitalizeFirstLetter = (str) => {
@@ -22,24 +32,25 @@ const Home = () => {
   // Function to handle the API call
   const findLink = async () => {
     try {
+      setLoading(true);
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
       setDegreesOfSeparation(response.degreesOfSeparation);
-      setPath(response.path);
+      setPath(response.path)
+      setMoviesPath(response.moviesPath)
+      dispatch(clearSomeActors())
+      setLoading(false);
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      <h1 className="ml-8">Home</h1>
-      <div>
+      <div className="flex">
         <Star />
-        <div className="ml-8">Welcome {auth.username} to Reel Relations!! </div>
+        <div className="ml-3 mr-3 mb-4">Welcome {auth.username} to Reel Relations!! </div>
         <Star />
-        <button onClick={() => dispatch(logout())} className="ml-8">
-          Logout
-        </button>
       </div>
 
       {/* Input fields for casts' (actors') names */}
@@ -76,7 +87,7 @@ const Home = () => {
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
-      {path !== null && <div>Path Array: {path}</div>}
+      {loading && <Spinner />}
     </div>
   );
 };
