@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, Link } from "react-router-dom";
 import {
   fetchActorById,
   fetchFavoriteCasts,
@@ -148,9 +148,9 @@ const SingleCast = () => {
         <Carousel movies={singleActor.movie_credits.cast} />
         <ul>
           {currentMovies.map((movie) => (
-            <li key={movie.id}>
-              {movie.title} {movie.popularity}
-            </li>
+            <Link className="block" to={`/movie/${movie.id}`}>
+                {movie.title}
+              </Link>
           ))}
         </ul>
         <div>
