@@ -1,16 +1,39 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { fetchMovieById } from "../store";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
+import { addFavoriteMovie, deleteFavoriteMovie, fetchFavoriteMovies, fetchMovieById } from "../store";
+import { useParams, NavLink } from "react-router-dom";
 import Spinner from "./Spinner";
 
 const SingleMovie = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { singleMovie } = useSelector((state) => state);
+  const { singleMovie, favoriteMovies, auth } = useSelector((state) => state);
+
+  const isMovieInFavorites = (movieId) => {
+    if (favoriteMovies.length === 0) {
+      return false; 
+    }
+
+    return favoriteMovies.some((movie) => {
+      return movie.movieId === movieId;
+    });
+  };
+
+  const handleToggleFavorite = (movieId) => {
+    if (isMovieInFavorites(movieId)) {
+      dispatch(deleteFavoriteMovie(movieId));
+    } else {
+      dispatch(addFavoriteMovie(movieId));
+    }
+    dispatch(fetchFavoriteMovies());
+  };
 
   useEffect(() => {
     dispatch(fetchMovieById(id));
+    dispatch(fetchFavoriteMovies());
   }, [dispatch, id]);
 
   const releaseYear = new Date(singleMovie?.release_date).getFullYear();
@@ -34,7 +57,16 @@ const SingleMovie = () => {
       </div>
       <div className="w-full md:w-2/3 px-4 my-4">
         <h1 className="font-semibold text-3xl">
-          {singleMovie.title} ({releaseYear})
+          {singleMovie.title} ({releaseYear}) {auth.username && (
+          <span >
+          {isMovieInFavorites(singleMovie.id) ? (
+            <FontAwesomeIcon icon={solidHeart} onClick={() => handleToggleFavorite(singleMovie.id)} />
+          ) : (
+            <FontAwesomeIcon icon={regularHeart} onClick={() => handleToggleFavorite(singleMovie.id)}/>
+          )}
+        </span>
+        )
+        }
         </h1>
         <p>
           Released: {formattedDate} - User Score: {singleMovie.vote_average} -
