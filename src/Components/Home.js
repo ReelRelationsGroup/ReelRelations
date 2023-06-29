@@ -16,7 +16,7 @@ const Home = () => {
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
   const [path, setPath] = useState([]);
-  const [moviesPath, setMoviesPath] = useState(null);
+  const [moviesPath, setMoviesPath] = useState([]);
 
   useEffect(() => {
     for (let i = 0; i < path.length; i++) {
@@ -34,6 +34,7 @@ const Home = () => {
     try {
       setLoading(true);
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
+      console.log(response);
       setDegreesOfSeparation(response.degreesOfSeparation);
       setPath(response.path);
       setMoviesPath(response.moviesPath);
@@ -50,7 +51,7 @@ const Home = () => {
       <div className="flex">
         <Star />
         <div className="ml-3 mr-3 mb-4 text-3xl">
-          Welcome {auth.username} to Reel Relations!!{" "}
+          Welcome {auth.username} to Reel Relations!!
         </div>
         <Star />
       </div>
@@ -93,6 +94,25 @@ const Home = () => {
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
+
+      {/* Display the actors and movies */}
+      {path.length > 0 && (
+        <div>
+          {path.map((actor, index) => (
+            <div key={index}>
+              {actor.name}
+              {moviesPath[index].length > 0 && (
+                <ul>
+                  {moviesPath[index].map((movie) => (
+                    <li key={movie.id}>{movie.title}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
       {loading && <Spinner />}
     </div>
   );
