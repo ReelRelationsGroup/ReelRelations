@@ -68,7 +68,7 @@ const Home = () => {
     <div>
       <div className="flex flex-wrap justify-center">
         <Star />
-        <div className="ml-3 mr-3 mb-4 text-3xl">
+        <div className="ml-3 mr-3 mb-4 text-3xl font-bold">
           Welcome {auth.username} to Reel Relations!!{" "}
         </div>
         <Star />
@@ -110,7 +110,7 @@ const Home = () => {
       <div>
         {/* Displays the degrees of separation */}
         {degreesOfSeparation !== null && (
-          <div className="flex flex-wrap justify-center text-3xl my-7">
+          <div className="flex flex-wrap font-semibold justify-center text-2xl my-7">
             Degrees of Separation: {degreesOfSeparation}
           </div>
         )}
@@ -118,7 +118,10 @@ const Home = () => {
           {flowchart.map((node) => (
             <div className="flex flex-wrap justify-center">
               {node.name ? (
-                <Link to={`/casts/${node.id}`} className="text-2xl">
+                <Link
+                  to={`/casts/${node.id}`}
+                  className="font-semibold text-xl"
+                >
                   {node.name}
                 </Link>
               ) : (
@@ -127,7 +130,10 @@ const Home = () => {
                     {" "}
                     who was in{" "}
                   </p>
-                  <Link to={`/movie/${node.id}`} className="text-2xl">
+                  <Link
+                    to={`/movie/${node.id}`}
+                    className="font-semibold text-xl"
+                  >
                     '{node.title}'
                   </Link>
                   <p className="flex flex-wrap justify-center my-5 text-md items-center font-normal italic">
