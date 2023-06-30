@@ -30,16 +30,19 @@ const Home = () => {
     for (let i=0;i<path.length;i++) {
       for (let j=0;j<someActors.length;j++) {
         if (someActors[j].id===path[i]) {
-          if (moviesPath[j]) {
+          if (moviesPath[i]) {
             temp.push(someActors[j])
-            temp.push(moviesPath[j][0])
+            temp.push(moviesPath[i][0])
           } else {
             temp.push(someActors[j])
           }
         }
       }
     }
-    console.log(temp)
+    console.log(path);
+    console.log(someActors);
+    console.log(moviesPath);
+    console.log(temp);
     setFlowchart(temp);
   },[someActors])
 
