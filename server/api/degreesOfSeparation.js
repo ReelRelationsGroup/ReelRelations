@@ -1,41 +1,31 @@
 const express = require("express");
 const app = express.Router();
 const { Casts, Movie, castsMovieLink } = require("../db");
-const bfs = require("../utils/DegreesOfSeparation"); // Update import statement
+const { Op } = require("sequelize");
 const buildGraph = require("../utils/graphBuilder");
-const getCommonMovie = require ("./getCommonMovie")
+const bfs = require("../utils/DegreesOfSeparation");
+const getCommonMovie = require("./getCommonMovie");
 
-// GET for degrees of separation between two actors
 app.get("/:castsId/:casts2Id", async (req, res, next) => {
   try {
     const { castsId, casts2Id } = req.params;
 
-    // Fetch the casts (actors) by name
-    const casts1 = await Casts.findOne({ where: { name: castsId } });
-    const casts2 = await Casts.findOne({ where: { name: casts2Id } });
+    const graph = await buildGraph();
+    console.log(castsId, casts2Id);
 
-    if (!casts1 || !casts2) {
-      return res.status(404).json({ error: "Actor Not Found" });
+    let path = bfs(graph, castsId, casts2Id);
+    if (path === null) {
+      return res.json({ degreesOfSeparation: null, path: [], moviesPath: [] });
     }
 
-    const graph = await buildGraph();
-    console.log(casts1.id, casts2.id);
-
-    // Using the bfs function to find the path between the two actors
-    let path = bfs(graph, casts1.id, casts2.id);
-
-    // Calculate degrees of separation
-    let degreesOfSeparation = path ? path.length - 1 : null;
+    let degreesOfSeparation = path.length - 1;
 
     let moviesPath = [];
-    for (let i = 0; i < path.length; i++){
-      if (path[i+1]) {
-        const commonMovies = await getCommonMovie(path[i], path[i+1]);
-        moviesPath.push(commonMovies);
-      }
+    for (let i = 0; i < path.length - 1; i++) {
+      const commonMovies = await getCommonMovie(path[i], path[i + 1]);
+      moviesPath.push(commonMovies);
     }
 
-    // Sending the result as a JSON response
     res.json({ degreesOfSeparation, path, moviesPath });
   } catch (error) {
     next(error);
