@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { logout, fetchSomeActors, clearSomeActors } from "../store";
 import { SearchIcon, Star } from "lucide-react";
 import { fetchDegreesOfSeparation } from "../utils/api";
@@ -8,33 +8,38 @@ import Spinner from "./Spinner";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
-  let { auth, someActors } = useSelector((state) => state);
+  const { auth, someActors } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   // state to keep track of the casts' (actors') names
   const [casts1Id, setCasts1Id] = useState("");
   const [casts2Id, setCasts2Id] = useState("");
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
-  const [path, setPath] = useState([])
-  const [moviesPath, setMoviesPath] = useState(null)
-  const [flowchart, setFlowchart] = useState([]);
+  const [path, setPath] = useState([]);
+  const [moviesPath, setMoviesPath] = useState(null);
+  const [flowchart, setFlowchart] = useState([])
 
   useEffect(() => {
-    for (let i=0;i<path.length;i++) {
+    for (let i = 0; i < path.length; i++) {
       dispatch(fetchSomeActors(path[i]));
     }
   }, [path]);
 
   useEffect(() => {
-    const temp = [];
+    let temp = [];
     for (let i=0;i<path.length;i++) {
       for (let j=0;j<someActors.length;j++) {
         if (someActors[j].id===path[i]) {
-          temp.push(someActors[j])
+          if (moviesPath[j]) {
+            temp.push(someActors[j])
+            temp.push(moviesPath[j][0])
+          } else {
+            temp.push(someActors[j])
+          }
         }
       }
     }
-    console.log(temp);
+    console.log(temp)
     setFlowchart(temp);
   },[someActors])
 
@@ -49,9 +54,9 @@ const Home = () => {
       setLoading(true);
       const response = await fetchDegreesOfSeparation(casts1Id, casts2Id);
       setDegreesOfSeparation(response.degreesOfSeparation);
-      setPath(response.path)
-      setMoviesPath(response.moviesPath)
-      dispatch(clearSomeActors())
+      setPath(response.path);
+      setMoviesPath(response.moviesPath);
+      dispatch(clearSomeActors());
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -63,9 +68,15 @@ const Home = () => {
     <div>
       <div className="flex">
         <Star />
-        <div className="ml-3 mr-3 mb-4">Welcome {auth.username} to Reel Relations!! </div>
+        <div className="ml-3 mr-3 mb-4 text-3xl">
+          Welcome {auth.username} to Reel Relations!!{" "}
+        </div>
         <Star />
       </div>
+      <p className="my-6 mx-20 flex flex-wrap justify-center items-center">
+        Discover the Enchanting World of Hollywood & Cinema From Across the
+        Globe & Uncover Why It's All About Who You Know
+      </p>
 
       {/* Input fields for casts' (actors') names */}
       <div className="flex flex-wrap justify-center join">
@@ -99,26 +110,22 @@ const Home = () => {
 
       {/* Displays the degrees of separation */}
       {degreesOfSeparation !== null && (
-        <div>Degrees of Separations: {degreesOfSeparation}</div>
+        <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
-      {flowchart.map(actor => (
-        <div>
-          <Link
-          to={`/casts/${actor.id}`}
-          >
-            {actor.name}
-          </Link>
-        </div>
-      ))}
-      {someActors.map(actor => (
-          <div>
-            <Link
-            to={`/casts/${actor.id}`}
-            >
-              {actor.name}
-            </Link>
-          </div>
-      ))}
+      {flowchart.map(node => (
+            <div>
+              <Link
+             to={`/casts/${node.id}`}
+              >
+                {node.name}
+              </Link>
+              <Link
+              to={`/movie/${node.id}`}
+              >
+                {node.title}
+              </Link>
+            </div>
+          ))}
       {loading && <Spinner />}
     </div>
   );
