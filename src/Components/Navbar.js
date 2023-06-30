@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { Clapperboard } from "lucide-react";
 import user from "../store/user";
+import EditAccount from './EditAccount'
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,11 @@ const Navbar = () => {
               >
                 My Favorites
               </Link>
+              <div>
+              <Link to='/editAccount'
+              className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white"
+              >Edit Account</Link><br />
+            </div>
               <button
                 onClick={() => dispatch(logout())}
                 className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white"
