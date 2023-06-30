@@ -113,19 +113,26 @@ const Home = () => {
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
       {flowchart.map(node => (
+        <div>
+          {node.name ? (
+            <Link
+            to={`/casts/${node.id}`}
+            >
+              {node.name}
+            </Link>
+          ) : (
             <div>
-              <Link
-             to={`/casts/${node.id}`}
-              >
-                {node.name}
-              </Link>
+              <p>was in </p>
               <Link
               to={`/movie/${node.id}`}
               >
-                {node.title}
+                '{node.title}'
               </Link>
+              <p> with</p>
             </div>
-          ))}
+          )}
+        </div>
+      ))}
       {loading && <Spinner />}
     </div>
   );
