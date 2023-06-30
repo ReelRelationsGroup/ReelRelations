@@ -13,12 +13,16 @@ import { PageNotFound } from "./PageNotFound";
 import Spinner from "./Spinner";
 import Favorites from "./Favorites";
 import Footer from "./Footer";
+import { loginWithToken } from "../store";
 
 const App = () => {
+  const { auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // initial data loading here
+    dispatch(loginWithToken());
     // when loaded then set loading to false
     setLoading(false);
   }, []);

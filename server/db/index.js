@@ -16,6 +16,14 @@ User.hasMany(FavoriteMovies);
 FavoriteMovies.belongsTo(User);
 FavoriteCasts.belongsTo(User);
 
+FavoriteMovies.belongsTo(Movie, { foreignKey: 'movieId' });
+Movie.hasMany(FavoriteMovies, { foreignKey: 'movieId' });
+
+FavoriteCasts.belongsTo(Casts, { foreignKey: 'actorId' });
+Casts.hasMany(FavoriteCasts, { foreignKey: 'actorId' });
+
+
+
 const apiKey = process.env.API_KEY;
 
 const fetchPopularCastMembers = async (page) => {

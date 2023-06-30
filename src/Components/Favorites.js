@@ -1,21 +1,25 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchFavoriteCasts, fetchFavoriteMovies } from "../store";
+import React, { useEffect, useState } from "react";
+import FavoriteCasts from "./FavoriteCasts";
+import FavoriteMovies from "./FavoriteMovies";
+
 
 const Favorites = () => {
 
-    const { favoriteMovies, favoriteCasts } = useSelector((state) => state);
-    const dispatch = useDispatch();
+    const [activeTab, setActiveTab] = useState(0);
 
-    useEffect(() => {
-        dispatch(fetchFavoriteMovies());
-        dispatch(fetchFavoriteCasts())
-    }, [dispatch])
+    const handleTabClick = (index) => {
+        setActiveTab(index);
+    }
 
 
     return (
         <div>
-            <h1>FAVORITES TAB</h1>
+            <h1>Your Favorites</h1>
+            <h3 
+                onClick={() => setActiveTab(0)}>Favorite Movies</h3>
+            <h3 
+                onClick={() => setActiveTab(1)}>Favorite Casts</h3>
+            {activeTab == 0 ? <FavoriteMovies /> : <FavoriteCasts />}
         </div>
     )
 }
