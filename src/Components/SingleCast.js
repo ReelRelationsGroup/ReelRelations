@@ -1,21 +1,65 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, NavLink } from "react-router-dom";
-import { fetchActorById, fetchActors } from "../store";
+import { useParams, NavLink, Link } from "react-router-dom";
+import {
+  fetchActorById,
+  fetchFavoriteCasts,
+  addFavoriteCast,
+  deleteFavoriteCast,
+} from "../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
 import Carousel from "./Carousel";
 import Spinner from "./Spinner";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 const SingleCast = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { singleActor, actors } = useSelector((state) => state);
+  const { singleActor, favoriteCasts, auth } = useSelector((state) => state);
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 15;
+  const [expanded, setExpanded] = useState(false);
+
+  const isActorInFavorites = (actorId) => {
+    if (favoriteCasts.length === 0) {
+      return false;
+    }
+    return favoriteCasts.some((actor) => {
+      return actor.actorId === actorId;
+    });
+  };
+
+  const handleToggleFavorite = (actorId) => {
+    if (isActorInFavorites(actorId)) {
+      dispatch(deleteFavoriteCast(actorId));
+    } else {
+      dispatch(addFavoriteCast(actorId));
+    }
+    dispatch(fetchFavoriteCasts());
+  };
 
   useEffect(() => {
     dispatch(fetchActorById(id));
-    dispatch(fetchActors());
+    dispatch(fetchFavoriteCasts());
   }, [dispatch, id]);
+
+  // Calculate the current age
+  const birthDate = new Date(singleActor.birthday);
+  const ageDiffMs = Date.now() - birthDate.getTime();
+  const ageDate = new Date(ageDiffMs);
+  const currentAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+  const toggleExpand = () => {
+    setExpanded(!expanded);
+  };
+
+  const truncatedBiography = singleActor?.biography
+    ?.split(" ")
+    ?.slice(0, 100)
+    ?.join(" ");
+  const showReadMore = singleActor?.biography?.split(" ").length > 100;
 
   if (!singleActor || !singleActor.movie_credits) {
     return (
@@ -53,24 +97,63 @@ const SingleCast = () => {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2">
+      <div className="mx-6 w-full md:w-1/2">
         <h1>{singleActor.name}</h1>
-        <h1>ACTORS: {actors.length}</h1>
+        {auth.username && (
+          <span>
+            {isActorInFavorites(singleActor.id) ? (
+              <FontAwesomeIcon
+                icon={solidHeart}
+                onClick={() => handleToggleFavorite(singleActor.id)}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={regularHeart}
+                onClick={() => handleToggleFavorite(singleActor.id)}
+              />
+            )}
+          </span>
+        )}
+        <h1>Current Age: {currentAge} years old</h1>
         <img
-          className="w-52 h-75"
+          className="w-52 h-75 rounded-lg my-4"
           src={`https://image.tmdb.org/t/p/original${singleActor.profile_path}`}
           alt="Actor Profile"
         />
-        <h3>Born on {singleActor.birthday}</h3>
-        <p>{singleActor.biography}</p>
+        {expanded ? (
+          <p>{singleActor.biography}</p>
+        ) : (
+          <p>{truncatedBiography}</p>
+        )}
+        {showReadMore && (
+          <button
+            className="text-lg font-semibold text-blue-500 hover:underline"
+            onClick={toggleExpand}
+          >
+            {expanded ? (
+              <div className="flex items-center">
+                <ChevronsLeft size={20} />
+                <div>Read Less</div>
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <div>Read More</div>
+                <ChevronsRight size={20} />
+              </div>
+            )}
+          </button>
+        )}
       </div>
       <div className="w-full md:w-1/2">
         <Carousel movies={singleActor.movie_credits.cast} />
         <ul>
           {currentMovies.map((movie) => (
             <li key={movie.id}>
-              {movie.title} {movie.popularity}
+              <Link className="block" to={`/movie/${movie.id}`}>
+                {movie.title}
+              </Link>
             </li>
+          
           ))}
         </ul>
         <div>
