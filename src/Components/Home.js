@@ -17,12 +17,31 @@ const Home = () => {
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
   const [path, setPath] = useState([]);
   const [moviesPath, setMoviesPath] = useState(null);
+  const [flowchart, setFlowchart] = useState([])
 
   useEffect(() => {
     for (let i = 0; i < path.length; i++) {
       dispatch(fetchSomeActors(path[i]));
     }
   }, [path]);
+
+  useEffect(() => {
+    let temp = [];
+    for (let i=0;i<path.length;i++) {
+      for (let j=0;j<someActors.length;j++) {
+        if (someActors[j].id===path[i]) {
+          if (moviesPath[j]) {
+            temp.push(someActors[j])
+            temp.push(moviesPath[j][0])
+          } else {
+            temp.push(someActors[j])
+          }
+        }
+      }
+    }
+    console.log(temp)
+    setFlowchart(temp);
+  },[someActors])
 
   // Helper function to capitalize the first letter of every word
   const capitalizeFirstLetter = (str) => {
@@ -93,6 +112,27 @@ const Home = () => {
       {degreesOfSeparation !== null && (
         <div>Degrees of Separation: {degreesOfSeparation}</div>
       )}
+      {flowchart.map(node => (
+        <div>
+          {node.name ? (
+            <Link
+            to={`/casts/${node.id}`}
+            >
+              {node.name}
+            </Link>
+          ) : (
+            <div>
+              <p>was in </p>
+              <Link
+              to={`/movie/${node.id}`}
+              >
+                '{node.title}'
+              </Link>
+              <p> with</p>
+            </div>
+          )}
+        </div>
+      ))}
       {loading && <Spinner />}
     </div>
   );
