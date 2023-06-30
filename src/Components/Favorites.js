@@ -14,7 +14,7 @@ const Favorites = () => {
 
     return (
         <div>
-            <h1>FAVORITES TAB</h1>
+            <h1>Your Favorites</h1>
             <h3 
                 onClick={() => setActiveTab(0)}>Favorite Movies</h3>
             <h3 

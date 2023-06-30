@@ -148,9 +148,12 @@ const SingleCast = () => {
         <Carousel movies={singleActor.movie_credits.cast} />
         <ul>
           {currentMovies.map((movie) => (
-            <Link className="block" to={`/movie/${movie.id}`}>
+            <li key={movie.id}>
+              <Link className="block" to={`/movie/${movie.id}`}>
                 {movie.title}
               </Link>
+            </li>
+          
           ))}
         </ul>
         <div>

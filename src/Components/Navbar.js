@@ -16,6 +16,11 @@ const Navbar = () => {
   };
 
   const renderAuthButtons = () => {
+
+    const handleMenuOptionClick = () => {
+      setProfileOpen(false); 
+    };
+
     if (auth.username) {
       return (
         <div className="relative">
@@ -29,12 +34,16 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg py-2 shadow-md">
               <Link
                 to="/favorites"
+                onClick={() => handleMenuOptionClick()}
                 className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white"
               >
                 My Favorites
               </Link>
               <button
-                onClick={() => dispatch(logout())}
+                onClick={() => {
+                  dispatch(logout())
+                  handleMenuOptionClick()
+                }}
                 className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white"
               >
                 Logout
