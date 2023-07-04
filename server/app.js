@@ -6,10 +6,7 @@ const passport = require("passport");
 const GitHubStrategy = require("passport-github2").Strategy;
 const session = require("express-session");
 const degreesOfSeparation = require("./api/degreesOfSeparation");
-
-// app.use((req, res, next) => {
-//   console.log(req.url), next();
-// });
+const User = require("./db/User");
 
 app.use(express.json());
 
@@ -28,12 +25,31 @@ passport.use(
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL: process.env.GITHUB_REDIRECT_URL,
     },
-    function (accessToken, refreshToken, profile, done) {
-      // User.findOrCreate({ githubId: profile.id }, function (err, user) {
-      //   return done(err, user);
-      // });
-      console.log(accessToken);
-      done(null, profile);
+    async function (accessToken, refreshToken, profile, done) {
+      try {
+        const githubUsername = profile.username; // Extract the GitHub username from the profile
+
+        // Find or create a user with the GitHub username
+        let user = await User.findOne({ where: { username: githubUsername } });
+
+        if (!user) {
+          // If the user does not exist, create a new user
+          user = await User.create({
+            username: githubUsername,
+            password: `random-${Math.random()}`, // Set a random password for the user
+          });
+        }
+
+        // Update the username of the user
+        await user.update({
+          username: githubUsername,
+        });
+
+        // Return the user object
+        return done(null, user);
+      } catch (err) {
+        done(err);
+      }
     }
   )
 );
@@ -49,6 +65,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// app.use((req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     console.log("Authenticated Through Passport JS");
+//   } else {
+//     console.log("Not Authenticated Through Passport JS");
+//   }
+//   next();
+// });
+
 app.use("/dist", express.static(path.join(__dirname, "../dist")));
 app.use("/static", express.static(path.join(__dirname, "../static")));
 
@@ -60,10 +85,31 @@ app.get(
   "/api/auth/oauth/github",
   passport.authenticate("github", { failureRedirect: "/login" }),
   function (req, res) {
+    console.log("User Authenticated Through GitHub");
     // Successful authentication, redirect to the homepage
     res.redirect("/");
   }
 );
+
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    console.log("Authenticated Through Passport JS");
+  } else {
+    console.log("Not Authenticated Through Passport JS");
+  }
+  next();
+});
+
+// Authentication middleware
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    // User is authenticated, allow access to the next middleware or route handler
+    return next();
+  } else {
+    // User is not authenticated, redirect to the login page or return an unauthorized response
+    return res.status(401).send("Unauthorized");
+  }
+};
 
 // Additional routes
 app.use("/api/auth", require("./api/auth"));
