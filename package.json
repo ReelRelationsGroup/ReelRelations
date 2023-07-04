@@ -9,12 +9,13 @@
     "test": "JWT=shhhhh mocha",
     "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",
     "test:dev:quiet": "QUIET=true npm run test:dev",
-    "start:dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/"
+    "start:dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "2": "^3.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
