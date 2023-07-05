@@ -40,15 +40,16 @@ User.findByToken = async function (token) {
     if (user) {
       return user;
     }
-    throw "user not found";
+    throw "User Not Found";
   } catch (ex) {
-    const error = new Error("bad credentials");
+    const error = new Error("Bad Credentials");
     error.status = 401;
     throw error;
   }
 };
 
 User.prototype.generateToken = function () {
+  const expiresIn = "1d"; // Token expires in 1 day
   return jwt.sign({ id: this.id }, JWT);
 };
 
@@ -61,7 +62,7 @@ User.authenticate = async function ({ username, password }) {
   if (user && (await bcrypt.compare(password, user.password))) {
     return jwt.sign({ id: user.id }, JWT);
   }
-  const error = new Error("bad credentials");
+  const error = new Error("Bad Credentials");
   error.status = 401;
   throw error;
 };
@@ -82,7 +83,7 @@ User.authenticateGithub = async function (code) {
   );
   const { access_token, error } = response.data;
   if (error) {
-    const _error = Error(error);
+    const _error = new Error(error);
     _error.status = 401;
     throw _error;
   }
@@ -100,10 +101,11 @@ User.authenticateGithub = async function (code) {
   });
 
   if (!user) {
+    const randomPassword = generateRandomPassword();
     user = await User.create({
       login,
       username: `Github-${login}`,
-      password: `random-${Math.random()}`,
+      password: await bcrypt.hash(randomPassword, 5),
     });
   }
 
@@ -113,5 +115,18 @@ User.authenticateGithub = async function (code) {
 
   return user.generateToken();
 };
+
+function generateRandomPassword() {
+  const length = 12;
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+  }
+  return password;
+}
 
 module.exports = User;
