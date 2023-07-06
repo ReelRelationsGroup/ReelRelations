@@ -32,7 +32,7 @@ const Navbar = () => {
             Welcome {auth.username}
           </button>
           {profileOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg py-2 shadow-md">
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg py-2 shadow-md z-10">
               <Link
                 to="/favorites"
                 onClick={() => handleMenuOptionClick()}
