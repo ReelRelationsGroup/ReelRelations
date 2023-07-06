@@ -1,10 +1,13 @@
 <html>
   <head>
     <title>Reel Relations</title>
-    <script src='/dist/main.js' defer></script>
-    <link rel='stylesheet' href='/static/styles.css' />
+    <script>
+      window.CLIENT_ID = "<%= CLIENT_ID %>";
+    </script>
+    <script src="/dist/main.js" defer></script>
+    <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
-    <div id='root'></div>
+    <div id="root"></div>
   </body>
 </html>
