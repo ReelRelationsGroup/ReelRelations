@@ -25,6 +25,17 @@ export const addUserProfile = createAsyncThunk('addUserProfile', async(user) => 
   }
 })
 
+export const updateUser = createAsyncThunk("updateUsers", async ({ data, id }) => {
+  try {
+    console.log(id);
+    const response = await axios.put(`/api/users/${id}`, data);
+    console.log(response.data)
+    return response.data;
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -52,7 +63,10 @@ const userSlice = createSlice({
       .addCase(addUserProfile.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload.error;
-      });
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        return action.payload;
+      })
   },
 });
 

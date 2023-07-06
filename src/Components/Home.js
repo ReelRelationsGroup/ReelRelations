@@ -17,7 +17,7 @@ const Home = () => {
   const [degreesOfSeparation, setDegreesOfSeparation] = useState(null);
   const [path, setPath] = useState([]);
   const [moviesPath, setMoviesPath] = useState(null);
-  const [flowchart, setFlowchart] = useState([])
+  const [flowchart, setFlowchart] = useState([]);
 
   useEffect(() => {
     for (let i = 0; i < path.length; i++) {
@@ -27,24 +27,21 @@ const Home = () => {
 
   useEffect(() => {
     let temp = [];
-    for (let i=0;i<path.length;i++) {
-      for (let j=0;j<someActors.length;j++) {
-        if (someActors[j].id===path[i]) {
-          if (moviesPath[i]) {
-            temp.push(someActors[j])
-            temp.push(moviesPath[i][0])
+    for (let i = 0; i < path.length; i++) {
+      for (let j = 0; j < someActors.length; j++) {
+        if (someActors[j].id === path[i]) {
+          if (moviesPath[j]) {
+            temp.push(someActors[j]);
+            temp.push(moviesPath[j][0]);
           } else {
-            temp.push(someActors[j])
+            temp.push(someActors[j]);
           }
         }
       }
     }
-    console.log(path);
-    console.log(someActors);
-    console.log(moviesPath);
     console.log(temp);
     setFlowchart(temp);
-  },[someActors])
+  }, [someActors]);
 
   // Helper function to capitalize the first letter of every word
   const capitalizeFirstLetter = (str) => {
@@ -69,9 +66,9 @@ const Home = () => {
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex flex-wrap justify-center">
         <Star />
-        <div className="ml-3 mr-3 mb-4 text-3xl">
+        <div className="ml-3 mr-3 mb-4 text-3xl font-bold">
           Welcome {auth.username} to Reel Relations!!{" "}
         </div>
         <Star />
@@ -110,33 +107,46 @@ const Home = () => {
           Find Link
         </button>
       </div>
-
-      {/* Displays the degrees of separation */}
-      {degreesOfSeparation !== null && (
-        <div>Degrees of Separation: {degreesOfSeparation}</div>
-      )}
-      {flowchart.map(node => (
-        <div>
-          {node.name ? (
-            <Link
-            to={`/casts/${node.id}`}
-            >
-              {node.name}
-            </Link>
-          ) : (
-            <div>
-              <p>was in </p>
-              <Link
-              to={`/movie/${node.id}`}
-              >
-                '{node.title}'
-              </Link>
-              <p> with</p>
+      <div>
+        {/* Displays the degrees of separation */}
+        {degreesOfSeparation !== null && (
+          <div className="flex flex-wrap font-semibold justify-center text-2xl my-7">
+            Degrees of Separation: {degreesOfSeparation}
+          </div>
+        )}
+        <div className="">
+          {flowchart.map((node) => (
+            <div className="flex flex-wrap justify-center">
+              {node.name ? (
+                <Link
+                  to={`/casts/${node.id}`}
+                  className="font-semibold text-xl"
+                >
+                  {node.name}
+                </Link>
+              ) : (
+                <div>
+                  <p className="flex flex-wrap justify-center my-5 text-md items-center font-normal italic">
+                    {" "}
+                    who was in{" "}
+                  </p>
+                  <Link
+                    to={`/movie/${node.id}`}
+                    className="font-semibold text-xl"
+                  >
+                    '{node.title}'
+                  </Link>
+                  <p className="flex flex-wrap justify-center my-5 text-md items-center font-normal italic">
+                    {" "}
+                    with
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
-      ))}
-      {loading && <Spinner />}
+        {loading && <Spinner />}
+      </div>
     </div>
   );
 };

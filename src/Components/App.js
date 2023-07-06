@@ -14,6 +14,7 @@ import Spinner from "./Spinner";
 import Favorites from "./Favorites";
 import Footer from "./Footer";
 import { loginWithToken } from "../store";
+import EditAccount from './EditAccount'
 
 const App = () => {
   const { auth } = useSelector((state) => state);
@@ -31,6 +32,15 @@ const App = () => {
     <div>
       <div>
         <Navbar />
+        {
+        auth.id ? (
+          <div>
+            <Routes>
+              <Route path='/editAccount' element={<EditAccount />} />
+            </Routes>
+          </div>
+        ) : null
+      }
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movie/:id" element={<SingleMovie />} />
