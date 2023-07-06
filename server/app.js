@@ -4,6 +4,9 @@ const path = require("path");
 const Movie = require("./db/Movie");
 const Casts = require("./db/Casts");
 const degreesOfSeparation = require("./api/degreesOfSeparation");
+const mime = require("mime");
+
+mime.defaultType = "application/javascript";
 
 app.use(express.json());
 app.engine("html", require("ejs").renderFile);
