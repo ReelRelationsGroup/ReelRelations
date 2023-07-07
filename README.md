@@ -4,6 +4,12 @@
 2. Install the dependencies by running `npm install`.
 3. Create a new file named `.env` in the root directory of the project.
 4. Add the following line to the `.env` file, replacing `your_api_key_here` with your actual API key:
+5. Secrets.js should be created and added with your keys
+
+process.env.API_KEY = "TMDB api key here";
+process.env.CLIENT_ID = "github oauth client_id";
+process.env.CLIENT_SECRET = "github oauth client_secret";
+process.env.REDIRECT_URL = "http://localhost:3000/api/auth/oauth/github";
 
 Make sure to keep the `.env` file secure and avoid committing it to version control. 5. Start the server by running `npm start`.
 
